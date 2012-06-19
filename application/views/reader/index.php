@@ -1,5 +1,5 @@
 <?php 
-	set_js_path('http://cloud.github.com/downloads/emberjs/ember.js/ember-0.9.6.min.js');
+	set_js_path('libs/ember-0.9.8.1.min');
 	set_js_path(array("reader"));
 	set_js_fx("
 		$('.fluxNews').each(function(index) {
@@ -24,6 +24,7 @@
 									<p>{{description}}</p>
 								</div>
 							{{/each}}
+							{{RSSreader.rssCollection.<?php echo $flux->getId(); ?>.testBinding}}
 						</script>
 					</div>
 				<hr/>

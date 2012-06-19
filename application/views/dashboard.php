@@ -45,7 +45,7 @@
 					<ul class="toolList">
 						<li><a href="#">OUTILS MEDICAUX</a></li>
 						<li><a href="#">VIDAL</a></li>
-						<li><a href="#">ECHELLES</a></li>
+						<li><a href="<?php echo base_url('reader/scales');?>">ECHELLES</a></li>
 						<li><a href="#">OUTILS DE CALCULS</a></li>
 						<li><a href="#">AGENDA</a></li>
 						<li><a href="#">CRAT</a></li>

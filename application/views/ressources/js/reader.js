@@ -25,13 +25,18 @@ RSSreader.news = Ember.Object.extend({
 RSSreader.RSSflux = Ember.Object.extend({ 
 	id: null, 
 	lastUpdate: 0,
-	newsCollection: null,		
+	newsCollection: null,
+	testBinding: function() {
+		var id = this.get('id');
+		var lastUpdate = this.get('lastUpdate');
+		return id + ' ' + lastUpdate;
+	}.property('id', 'lastUpdate'),
 	init: function(){ 
 			this._super();
 			this.newsCollection = Ember.ArrayController.create({
 				content: []
-			})
-		}, 
+			}); 
+		},
 	update: function(fluxId) {
 		var me = this;
 		$.getJSON("http://stadja.net:8080/readRss/"+this.id+"/"+this.lastUpdate, function(data){
@@ -59,7 +64,7 @@ RSSreader.RSSflux = Ember.Object.extend({
 			}
 			me.update();
 		});
-	}
+	},	
 });
 
 
@@ -106,7 +111,10 @@ RSSreader.rssCollection = Ember.ArrayController.create({
 /**/
 			if (flux[fluxId] == '') {
 				flux[fluxId] = RSSreader.RSSflux.create({ 
-					id: fluxId
+					id: fluxId,
+					// previewRss: function() {
+					// 	return this.get('newsCollection');
+					// }.property()
 				});
 			}
 
