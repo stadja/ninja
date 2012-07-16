@@ -1,0 +1,19 @@
+#header-container{
+	display: none;
+}
+
+#footer-container{
+	display: none;
+}
+
+toolbox {
+	display: none;
+}
+
+.toolList {
+        display: none;
+}
+
+#dashboard {
+	height: 100%;
+}
