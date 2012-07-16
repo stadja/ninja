@@ -117,6 +117,26 @@ class admin extends CI_Controller {
 		$this->session->set_flashdata("invitation_sent", "L&#039;utilisateur ".$user->firstname.' '.$user->name.' a &eacute;t&eacute; invit&eacute; par un courriel envoy&eacute; &agrave; '.$user->email);
 
 	}
+
+	function edit_scales($id = 1) {
+			$this->data['main_view'] = 'dashboard';
+			$this->data['main_frame'] = 'admin/editScales';
+			
+			$this->load->model('Tools','',TRUE);
+			$this->data['scale'] = $this->Tools->get($id);
+			$this->data['toolId'] = $id;
+			$this->load->view('template', $this->data);
+	}
+
+	function save_scale() {
+			$id = $this->input->post('id');
+			$serialization = $this->input->post('serialization');
+
+			$this->load->model('Tools');
+			$scale = $this->Tools->addOrUpdateScale($id, $serialization);
+
+			return $scale;
+	}
 }
 
 /* End of file welcome.php */

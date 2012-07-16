@@ -41,9 +41,13 @@ class reader extends CI_Controller {
 		redirect('reader/setup');
 	}
 
-	function scales() {
+	function scales($id = 1) {
 			$this->data['main_view'] = 'dashboard';
 			$this->data['main_frame'] = 'reader/scales';
+			
+			$this->load->model('Tools','',TRUE);
+			$this->data['scale'] = $this->Tools->get($id);
+			
 			$this->load->view('template', $this->data);
 	}
 

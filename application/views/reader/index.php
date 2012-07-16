@@ -3,7 +3,9 @@
 	set_js_path(array("reader"));
 	set_js_fx("
 		$('.fluxNews').each(function(index) {
-					RSSreader.read($(this).attr('id'));
+					if (RSSreader != undefined) {
+						RSSreader.read($(this).attr('id'));
+					}
 				});
 	");
 ?>
@@ -18,7 +20,7 @@
 					<h2 style='color:red'><b><?php echo $flux->getTitle(); ?></b></h2>
 					<div class="fluxNews" id="<?php echo $flux->getId(); ?>">
 						<script type="text/x-handlebars"> 
-							{{#each RSSreader.rssCollection.<?php echo $flux->getId(); ?>.newsCollection}}
+							{{#each RSSreader.rssCollection.<?php echo $flux->getId(); ?>.preview}}
 								<div style='border: 1px dotted'>
 									<h3>{{title}}</h3>
 									<p>{{description}}</p>

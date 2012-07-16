@@ -26,6 +26,7 @@ RSSreader.RSSflux = Ember.Object.extend({
 	id: null, 
 	lastUpdate: 0,
 	newsCollection: null,
+	preview: null,
 	testBinding: function() {
 		var id = this.get('id');
 		var lastUpdate = this.get('lastUpdate');
@@ -34,6 +35,9 @@ RSSreader.RSSflux = Ember.Object.extend({
 	init: function(){ 
 			this._super();
 			this.newsCollection = Ember.ArrayController.create({
+				content: []
+			}); 
+			this.preview = Ember.ArrayController.create({
 				content: []
 			}); 
 		},
@@ -47,6 +51,8 @@ RSSreader.RSSflux = Ember.Object.extend({
 				jsonWannabeFlux.newsCollection = [];
 				me.set('lastUpdate', data.lastUpdate);
 				me.newsCollection.clear();
+				me.preview.clear();
+				var i = 0;
 				$(data.articles).each(function(index, value){ 
 					var jsonNews = new Object();
 					jsonNews.title = value.title;
@@ -56,6 +62,10 @@ RSSreader.RSSflux = Ember.Object.extend({
 						description: value.description
 					}); 
 					me.newsCollection.pushObject(news);
+					if (i < 4) {
+						me.preview.pushObject(news);
+						i++;
+					}
 					jsonWannabeFlux.newsCollection.push(jsonNews);
 				});
 				if(typeof localStorage!='undefined') {
@@ -83,6 +93,7 @@ RSSreader.rssCollection = Ember.ArrayController.create({
 	init: function(){ 
 		this._super();
 		flux = [];
+		previewRss = [];
 	}, 
 	read: function(fluxId) {
 		rssCollection = this;
@@ -118,9 +129,8 @@ RSSreader.rssCollection = Ember.ArrayController.create({
 				});
 			}
 
-			rssCollection.set(fluxId, flux[fluxId]);
 		}
-
+		rssCollection.set(fluxId, flux[fluxId]);
 		flux[fluxId].update(fluxId);
 
 	}
