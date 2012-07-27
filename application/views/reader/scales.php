@@ -12,7 +12,7 @@
 ?>
 
 
-<articles>
+<div id="main" class="wrapper clearfix">
 
     <h2>Information du patient</h2>
     <input type="text" name="firstname" id="firstname" placeholder="Prénom">
@@ -43,4 +43,7 @@
 	</form>
     </script>
 	</div>
-</articles>
+
+    <a id='printit' onclick="javascript:window.print();return false;" href="#">Imprimer le test</a>
+
+</div>

@@ -27,11 +27,50 @@ class cdc extends CI_Controller {
 
 		$this->data['main_view'] = 'dashboard';
 		$this->data['main_frame'] = 'cdc/addNews';
+		$this->data['page_chosen'] = 'board';
 		$this->load->view('template', $this->data);
 		return false;
 
- 		redirect('cdc/addNews');
 	}
+
+	public function writeNews($id) {
+		$this->load->library('grocery_CRUD');		
+		$crud = new grocery_CRUD();
+		$crud->set_table('news');
+		$crud->set_subject('Article');
+    	$crud->where('flux',$id);
+    	$crud->unset_columns('flux');
+		$crud->set_relation('author','users','email');
+
+     	$crud->change_field_type('created','invisible');
+		$crud->change_field_type('updated','invisible');
+		$crud->change_field_type('flux','invisible');
+		$crud->change_field_type('author','invisible');
+    	$crud->callback_before_insert(array($this,'_before_insert'));
+   	 	$crud->unset_edit_fields('created');
+    	$crud->callback_before_update(array($this,'_before_update'));
+
+		$output = $crud->render();
+		$this->data['crud']      = $output;
+		$this->data['main_view'] = 'fragments/showCrud';
+		$this->load->view('template', $this->data);
+		return false;
+
+	}
+
+	function _before_insert($post_array) {
+		$now = date('Y-m-d H:i:s');
+		$post_array['created'] = $now;
+		$post_array['updated'] = $now;
+		$post_array['flux'] = $this->uri->segment(3);
+		$post_array['author'] = $this->user->getId();
+		return $post_array;	
+	}  
+	 
+	function _before_update($post_array) {
+		$post_array['updated'] = date('Y-m-d H:i:s');
+		return $post_array;	
+	}  
 
 	public function getNews($flux_id) {
 

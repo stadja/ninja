@@ -1,17 +1,5 @@
-#header-container{
+#footer-container, #header-container, #printit, toolbox, .toolList{
 	display: none;
-}
-
-#footer-container{
-	display: none;
-}
-
-toolbox {
-	display: none;
-}
-
-.toolList {
-        display: none;
 }
 
 #dashboard {
