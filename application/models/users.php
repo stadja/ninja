@@ -13,7 +13,7 @@ class Users extends CI_Model {
 	}
 
 	function get($id = '') {
-		$query = $this->db->get_where('users', array('id' => $id));
+		$query = $this->db->get_where('users', array('iduser' => $id));
 		if($query->num_rows() > 0) {
 			return new self($query->row());
 		}
@@ -32,7 +32,7 @@ class Users extends CI_Model {
 		$this->email     = $email;
 		$this->firstname = $firstname;
 		$this->name      = $name;
-		$this->id        = $this->db->insert_id();
+		$this->iduser    = $this->db->insert_id();
 
 		return $this;
 	}
@@ -50,9 +50,9 @@ class Users extends CI_Model {
 		$query = $this->db->get_where('permissions', array('name' => $permission));
 		$permission_value = $query->row()->value;
 		$collection = '';
-		$query = $this->db->select("users.*")->from('user_permissions')->like('permissions', '"'.$permission_value.'"')->join('users', 'users.id = user_permissions.user')->get();		
+		$query = $this->db->select("users.*")->from('user_permissions')->like('permissions', '"'.$permission_value.'"')->join('users', 'users.iduser = user_permissions.user')->get();		
 		foreach ($query->result() as $user) {
-			$id = $user->id;
+			$id = $user->iduser;
 			$collection->$id = new self($user);
 		}
 		return $collection;
@@ -78,11 +78,11 @@ class Users extends CI_Model {
 	function setPassword($password) {	
 		$this->load->library('encrypt');
 		$password = $this->encrypt->sha1($password);
-		return $this->db->update('users', array('password' => $password), array('id' => $this->getId()));	
+		return $this->db->update('users', array('password' => $password), array('iduser' => $this->getId()));	
 	}	
 
 	function confirm($confirm = true) {
-		return $this->db->update('users', array('is_confirmed' => $confirm), array('id' => $this->getId()));
+		return $this->db->update('users', array('is_confirmed' => $confirm), array('iduser' => $this->getId()));
 	}
 
 	function do_login($email, $password) {
@@ -97,7 +97,7 @@ class Users extends CI_Model {
 		}
 
 		$this->session->set_userdata('user', $user);
-		$this->session->set_userdata('userId', $user->id);
+		$this->session->set_userdata('userId', $user->iduser);
 
 	return $user;
 	}
@@ -122,7 +122,7 @@ class Users extends CI_Model {
 		if (!isset($this->fluxCollection)) {
 			$this->load->model('flux');
 
-			$query = $this->db->select("flux.*")->from('flux_cdc')->where('cdc', $this->getId())->join('flux', 'flux_cdc.flux = flux.id')->get();		
+			$query = $this->db->select("flux.*")->from('flux_cdc')->where('iduser', $this->getId())->join('flux', 'flux_cdc.idflux = flux.idflux')->get();		
 			$fluxCollection = $query->result();
 			$this->fluxCollection = array();
 			foreach ($fluxCollection as $flux) {
@@ -158,18 +158,33 @@ class Users extends CI_Model {
 			$result = array();
 
 			foreach ($flux_collection as $flux_subscription) {
-				$this->subscribedFlux[] = new Flux(array('id' => $flux_subscription->flux));
+				$this->subscribedFlux[] = $this->Flux->get($flux_subscription->flux);
 			}
 		}
 		return $this->subscribedFlux;
 	}
 
 	function getEmail() {
+		if(!isset($this->email)) {
+			return false;
+		}
 		return $this->email;
 	}
 
+	function getName() {
+		if(!isset($this->name)) {
+			return false;
+		}
+		return $this->name;
+	}
+
+	function getPatronyme() {
+		// return $this->getFirstname() . ' ' . $this->getName();
+		return 'Dr. ' . $this->getName();
+	}
+
 	function getId() {
-		return (isset($this->id)) ? $this->id : 0;
+		return (isset($this->iduser)) ? $this->iduser : 0;
 	}
 }
 ?>

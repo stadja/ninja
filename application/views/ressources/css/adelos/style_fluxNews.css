@@ -1,0 +1,97 @@
+.fluxNews ul li {
+list-style: none;
+}
+
+/* ==============
+    MOBILE: Main
+   ============== */
+
+#article-box{
+	width: 100%;
+	max-width:500px;
+	margin: 0 auto;
+}
+
+#article-box h1,
+#article-box h3{
+	color:rgb(23,40,56);
+}
+
+.article-info{
+	width:100%;
+}
+
+.article-info ul{
+	margin:0;
+	padding:0;
+}
+
+.article-info ul li{
+	display:inline;
+	font-size:0.9em;
+	font-weight:bold;
+	color:gray;
+}
+
+.article-info ul li a{
+	color:#e44d26;
+}
+
+
+.article-info ul li:nth-child(3){
+	float:right;
+}
+
+#prim-image img{
+	width:100%;
+}
+
+#source-box{
+	max-width:400px;
+	border-radius:5px;
+	width:100%;
+	color:#949494;
+	font-size:0.85em;
+	background-image: url('http://img440.imageshack.us/img440/8172/backdrop3d.jpg');	
+}
+
+#source-box h1{
+	color:#585858
+}
+
+.source-logo{
+	float:left;
+	margin:5px 10px 5px 5px;
+}
+
+
+/* =============================================================================
+   Media Queries
+   ========================================================================== */
+
+@media only screen and (min-width: 660px) {
+
+/* ====================
+    INTERMEDIATE: Main
+   ==================== */
+
+
+#article-box{
+	margin: 0;
+	float:left;
+} 
+
+#source-box{
+	float:left;
+	margin-left:4%;
+}
+
+/* =============================================================================
+   Media Queries
+   ========================================================================== */
+
+@media only screen and (min-width: 900px) {
+
+/* ====================
+    WIDE: Main
+   ==================== */

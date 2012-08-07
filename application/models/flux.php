@@ -14,7 +14,7 @@ class Flux extends CI_Model {
 
 	function getTitle() {
 		if (!isset($this->title)) {
-			$query = $this->db->get_where('flux', array('id' => $this->getId()));
+			$query = $this->db->get_where('flux', array('idflux' => $this->getId()));
 			if($query->num_rows() > 0) {
 				foreach ($query->row() as $key => $value) {
 					$this->$key = $value;
@@ -24,8 +24,18 @@ class Flux extends CI_Model {
 		return $this->title;
 	}
 
+	function getDescription() {
+		if(!isset($this->description)) {
+			return false;
+		}
+		return $this->description;
+	}
+
 	function getId() {
-		return $this->id;
+		if(!isset($this->idflux)) {
+			return false;
+		}
+		return $this->idflux;
 	}
 
 	function getFullCollection() {
@@ -34,7 +44,7 @@ class Flux extends CI_Model {
 		 if($query->num_rows() > 0) {
  			$collection = '';
 			foreach($query->result() as $flux) {
-				$id = $flux->id;
+				$id = $flux->idflux;
 				$collection->$id = new self($flux);
 			}
 			return $collection;
@@ -43,30 +53,29 @@ class Flux extends CI_Model {
 	}
 
 	function get($id = '') {
-		$query = $this->db->get_where('flux', array('id' => $id));
+		$query = $this->db->get_where('flux', array('idflux' => $id));
 		if($query->num_rows() > 0) {
 			return new self($query->row());
 		}
 		return false;
 	}
 
-	function add($id, $title = '', $description = '') {
+	function add($title = '', $description = '') {
 		$now = date ("Y-m-d H:i:s");
 		$data = array(
-			'id'     => $id,
-			'title' => $title,
-			'description'      => $description,
-			'created'      => $now,
-			'updated'      => $now,
-			'rss' => 'http://stadja.net:8080/rss/'.$id.'.xml'
+			'title'       => $title,
+			'description' => $description,
+			'created'     => $now,
+			'updated'     => $now,
 		);
-
 		$this->db->insert('flux', $data); 
-
-		$this->id     = $id;
-		$this->title = $title;
-		$this->description      = $description;
-		$this->updated      = $now;
+		
+		$this->idflux      = $this->db->insert_id();
+		$this->db->update('flux', array('rss' => 'http://stadja.net:8080/rss/'.$this->getId().'.xml'), array('idflux' => $this->getId())); 
+		
+		$this->title       = $title;
+		$this->description = $description;
+		$this->updated     = $now;
 
 		$this->load->model('Users');
 		$this->addNews('Message de Test pour le flux '.$title, 'Description pour le premier message', 'Premier Text', new Users());
@@ -75,7 +84,7 @@ class Flux extends CI_Model {
 	}
 
 	function getAllNews() {
-		$query = $this->db->get_where('news', array('flux' => $this->id));
+		$query = $this->db->get_where('news', array('flux' => $this->getId()));
 		if($query->num_rows() > 0) {
 			return $query->result();
 		}
@@ -91,7 +100,7 @@ class Flux extends CI_Model {
 			'author'            => $user->getId(),
 			'created'           => date('Y-m-d H:i:s'),
 			'updated'           => date('Y-m-d H:i:s'),
-			'flux'              => $this->id
+			'flux'              => $this->getId()
 		);
 		$this->db->insert('news', $data); 
 		return $data;
@@ -114,10 +123,10 @@ class Flux extends CI_Model {
 
 		if (!isset($this->cdcs)) {
 			$this->cdcs = false;
-			$flux_cdcs = $this->db->get_where('flux_cdc', array('flux' => $this->id))->result();
+			$flux_cdcs = $this->db->get_where('flux_cdc', array('idflux' => $this->getId()))->result();
 			
 			foreach ($flux_cdcs as $flux_cdc) {
-				$id_cdc = $flux_cdc->cdc;
+				$id_cdc = $flux_cdc->iduser;
 				$this->cdcs->$id_cdc = true;
 			}
 		}
@@ -128,6 +137,10 @@ class Flux extends CI_Model {
 
 	function deleteNews($id) {
 		return $this->db->delete('news', array('id' => $id)); 
+	}
+
+	function isExternal() {
+		return (isset($this->external) && $this->external);
 	}
 }
 ?>

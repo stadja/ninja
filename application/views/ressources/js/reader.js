@@ -4,8 +4,8 @@ jQuery.support.cors = true;
 * Application 
 **************************/ 
 RSSreader = Ember.Application.create({  
-	read: function(fluxId){
-		RSSreader.rssCollection.read(fluxId);
+	read: function(fluxId, isExternal){
+		RSSreader.rssCollection.read(fluxId, isExternal);
 	},
 	init: function() {
 		this._super();
@@ -19,7 +19,14 @@ RSSreader = Ember.Application.create({
 **************************/ 
 RSSreader.news = Ember.Object.extend({ 
 	title: null, 
-	description: null
+	description: null,
+	link: null,
+	openingLink: function() {
+		return '<a href="'+this.get('link')+'">';
+	}.property('link'),
+	openingExternalLink: function() {
+		return '<a target="_blank" href="'+this.get('link')+'">';
+	}.property('link'),
 });
 
 RSSreader.RSSflux = Ember.Object.extend({ 
@@ -57,12 +64,14 @@ RSSreader.RSSflux = Ember.Object.extend({
 					var jsonNews = new Object();
 					jsonNews.title = value.title;
 					jsonNews.description = value.description;
+					jsonNews.link = value.link;
 					var news = RSSreader.news.create({ 
 						title: value.title,
-						description: value.description
+						description: value.description,
+						link: value.link
 					}); 
 					me.newsCollection.pushObject(news);
-					if (i < 4) {
+					if (i < 5) {
 						me.preview.pushObject(news);
 						i++;
 					}
@@ -95,27 +104,38 @@ RSSreader.rssCollection = Ember.ArrayController.create({
 		flux = [];
 		previewRss = [];
 	}, 
-	read: function(fluxId) {
+	read: function(fluxId, isExternal) {
 		rssCollection = this;
 
 		flux[fluxId] = rssCollection.get(fluxId);
 		if (!flux[fluxId]) {
 			flux[fluxId] = '';
-/*			if(typeof localStorage!='undefined') {
+			if(typeof localStorage!='undefined') {
+			// if(false) {
 				var fluxStored = localStorage.getItem('fluxRSS_'+fluxId);
 				// Vérification de la présence du compteur
 				if(fluxStored != null) {
 					var jsonObject = JSON.parse(fluxStored);
+					if ((isExternal == 1)) {
+						jsonObject.lastUpdate = 0;
+					}
+
 					flux[fluxId] = RSSreader.RSSflux.create({ 
 						id: jsonObject.id,
 						lastUpdate: jsonObject.lastUpdate
 					});
-					$(jsonObject.newsCollection.content).each(function(index, value){ 
+					var j = 0;
+					$(jsonObject.newsCollection).each(function(index, value){ 
 						var news = RSSreader.news.create({ 
 							title: value.title,
-							description: value.description
+							description: value.description,
+							link: value.link
 						}); 
 						flux[fluxId].newsCollection.pushObject(news);
+						if (j < 5) {
+							flux[fluxId].preview.pushObject(news);
+							j++;
+						}
 					});
 				}
 			}

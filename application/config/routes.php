@@ -38,8 +38,9 @@
 |
 */
 
-$route['default_controller'] = "account";
+$route['default_controller'] = "reader";
 $route['invitation/(:any)'] = "account/respondToInvitation/$1";
+$route['news/(:any)'] = "reader/news/$1";
 $route['404_override'] = '';
 
 

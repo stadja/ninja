@@ -6,13 +6,12 @@ class reader extends CI_Controller {
 		parent::__construct();
 
 		$this->load->model('Users','',TRUE);
-		$this->load->model('Flux','',TRUE);
 
 		$this->user = $this->Users->get($this->session->userdata('userId'));
 		$this->data['user'] = $this->user;
 
 		if (!$this->user || !$this->user->hasRights('reader')) {
-			redirect('/');
+			redirect('/account');
 			return false;
 		}
 	}
@@ -20,15 +19,35 @@ class reader extends CI_Controller {
 	function index() {
 		$this->data['main_view'] = 'dashboard';
 		$this->data['main_frame'] = 'reader/index';
+		$this->data['page_chosen'] = 'board';
+		$this->load->view('template', $this->data);
+	}
+
+	function news($id = 31) {
+
+		$this->load->model('News','',TRUE);
+		$news = $this->News->get($id);
+
+		$this->data['news'] = $news;
+
+		// debug($news->getAuthor());
+		// debug($news->getAuthor()->getPatronyme());
+
+		$this->data['main_view'] = 'dashboard';
+		$this->data['main_frame'] = 'reader/news';
+		$this->data['page_chosen'] = 'board';
 		$this->load->view('template', $this->data);
 	}
 
 	function setup() {
+
+		$this->load->model('Flux','',TRUE);
 		$this->data['flux_collection'] = $this->Flux->getFullCollection();
 
 		if (!$this->input->post('flux_setup')) {
 			$this->data['main_view'] = 'dashboard';
 			$this->data['main_frame'] = 'reader/setup';
+			$this->data['page_chosen'] = 'board';
 			$this->load->view('template', $this->data);
 			return false;
 		}

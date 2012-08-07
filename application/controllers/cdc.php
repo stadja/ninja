@@ -38,13 +38,13 @@ class cdc extends CI_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_table('news');
 		$crud->set_subject('Article');
-    	$crud->where('flux',$id);
+    	$crud->where('idflux',$id);
     	$crud->unset_columns('flux');
 		$crud->set_relation('author','users','email');
 
      	$crud->change_field_type('created','invisible');
 		$crud->change_field_type('updated','invisible');
-		$crud->change_field_type('flux','invisible');
+		$crud->change_field_type('idflux','invisible');
 		$crud->change_field_type('author','invisible');
     	$crud->callback_before_insert(array($this,'_before_insert'));
    	 	$crud->unset_edit_fields('created');
