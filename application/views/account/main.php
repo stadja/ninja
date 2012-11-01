@@ -18,7 +18,7 @@
 						</footer>
 					</article>
 				</articles>
-				<aside>
+				<!-- <aside>
 					<h3>Colonne</h3>
 					<p>Peut petre on aura besoin d'une colonne en plus pour l'aide ?</p>
-				</aside>
+				</aside> -->

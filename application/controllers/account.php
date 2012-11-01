@@ -12,6 +12,7 @@ class account extends CI_Controller {
 		$this->data['user'] = $this->user;
 	}
 
+
 	/**
 	 * Index Page for this controller.
 	 *
@@ -32,7 +33,7 @@ class account extends CI_Controller {
 			$this->login();
 			return false;
 		} else {
-			redirect('account/main');
+			redirect('/');
 		}
 	}
 
@@ -112,7 +113,7 @@ class account extends CI_Controller {
 			return false;
 		}
 
-		redirect('account/main');
+		redirect('/');
 	}
 	
 	public function disconnect () {

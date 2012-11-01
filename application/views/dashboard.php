@@ -1,49 +1,63 @@
+<div id="wide-margins">
 	<div id="header-container">
 		<header class="wrapper clearfix">
-			<h1 id="title">NINJA Project</h1>
+			<div id="user-header">
+				<ul>
+					<li id="title"><a href="<?php echo base_url();?>">Dr <?php echo $user->name; ?></a></li>
+					<li id="logout"><a href="<?php echo base_url('account/disconnect');?>">D&eacute;connexion</a></li>
+				</ul>
+			</div>
+
 			<nav>
 				<ul>
-					<li><a href="#">nav ul li a</a></li>
-					<li><a href="#">nav ul li a</a></li>
-					<li><a href="#">nav ul li a</a></li>
+					<li><a href="#">Outils</a></li>
+
+					<?php $selected = (isset($page_chosen) && ($page_chosen == 'board')) ? 'selected' : ''; ?>
+					<li><a href="<?php echo base_url();?>" class="<?php echo $selected; ?>">&nbsp;Tableau de bord&nbsp;</a></li>
+
+					<li><a href="#">&nbsp;Pharma Panels&nbsp;</a></li>
+
+					<li><a href="#">&nbsp;Collège Medical&nbsp;</a></li>
+
+					<li><a href="#">&nbsp;Pharma Panels&nbsp;</a></li>
+
+					<?php $selected = (isset($page_chosen) && ($page_chosen == 'board')) ? 'selected' : ''; ?>
+					<li><a href="<?php echo base_url();?>" class="<?php echo $selected; ?>">&nbsp;Tableau de bord&nbsp;</a></li>
+
 				</ul>
 			</nav>
 		</header>
 	</div>
+
 	<div id="main-container">
-		<div id="main" class="wrapper clearfix">
 			<div id="dashboard">
-				<toolbox>
-                    <ul class="toolList">
-                            <li><a href="<?php echo base_url('account/disconnect');?>">D&eacute;connexion</a></li>
-                    </ul>
-					
+				
+				
+
+<?php $this->load->view($main_frame); ?>
+
+			</div>
+	</div> <!-- #main-container -->
+
+	<div id="footer-container">
+		<footer class="wrapper">
+			<toolbox>					
 					<?php if ($user->hasRights('admin')) :?>
 						<ul class="toolList">
-							<li><a href="#">Utilisateurs</a></li>
-							<li><a href="<?php echo base_url('admin/invit');?>">Inviter</a></li>
+							<li><a href="<?php echo base_url('admin/invit');?>">Inviter de nouveaux utilisateurs</a></li>
 						</ul>
 						<ul class="toolList">
-							<li><a href="#">Flux</a></li>
-							<li><a href="<?php echo base_url('admin/addFlux');?>">Créer flux</a></li>
-							<li><a href="<?php echo base_url('admin/changeFluxRights');?>">Gérer droits</a></li>
+							<li><a href="<?php echo base_url('admin/addFlux');?>">Créer/Gérer flux</a></li>
 						</ul>
 					<?php endif; ?>
-					<?php if ($user->hasRights('cdc')) :?>
 						<ul class="toolList">
-							<li><a href="#">Ajout de news</a></li>
-							<li><a href="<?php echo base_url('cdc/addNews');?>">Ecrire</a></li>
-						</ul>
+					<?php if ($user->hasRights('admin')) :?>
+						<li><a href="<?php echo base_url('admin/tools');?>">Créer/Modifier les échelles</a></li>
 					<?php endif; ?>
-					<?php if ($user->hasRights('reader')) :?>
-						<ul class="toolList">
-							<li><a href="#">MES FLUX D'INFOS</a></li>
-							<li><a href="<?php echo base_url('reader/setup');?>">PERSONNALISATION</a></li>
-							<li><a href="<?php echo base_url('reader');?>">Consultation</a></li>
+						<li><a href="<?php echo base_url('reader/scales');?>">Un exemple d'échelle</a></li>
 						</ul>
-					<?php endif; ?>
 					<ul class="toolList">
-						<li><a href="#">OUTILS MEDICAUX</a></li>
+						<li>OUTILS MEDICAUX : </li>
 						<li><a href="#">VIDAL</a></li>
 						<li><a href="<?php echo base_url('reader/scales');?>">ECHELLES</a></li>
 						<li><a href="#">OUTILS DE CALCULS</a></li>
@@ -51,16 +65,6 @@
 						<li><a href="#">CRAT</a></li>
 					</ul>
 				</toolbox>
-				
-
-<?php $this->load->view($main_frame); ?>
-
-			</div>
-		</div> <!-- #main -->
-	</div> <!-- #main-container -->
-
-	<div id="footer-container">
-		<footer class="wrapper">
-			<h3>footer</h3>
 		</footer>
 	</div>
+</div>

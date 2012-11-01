@@ -12,7 +12,7 @@
 ?>
 
 
-<articles>
+<div id="main" class="wrapper clearfix">
 	<div class='scale'>
     <script type="text/x-handlebars"> 
 		<h1>{{view Ember.TextArea valueBinding="Tools.scaleTool.title"}}</h1>
@@ -68,4 +68,4 @@
 	</form>
     </script>
 	</div>
-</articles>
+</div>

@@ -4,6 +4,11 @@ class admin extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
+		
+		$this->load->database();
+		$this->load->helper('url');
+		
+		$this->load->library('grocery_CRUD');	
 
 		set_js_path('admin');
 
@@ -38,32 +43,85 @@ class admin extends CI_Controller {
 		}
 	}
 
-	public function addFlux() {	
+	public function addFlux() {
+		$crud = new grocery_CRUD();
+		$crud->set_table('flux');
+        $crud->set_subject('Flux');
+        $crud->set_relation_n_n('cdcs', 'flux_cdc', 'users', 'idflux', 'iduser', 'email');
+   	 	
+   	 	$crud->unset_add_fields('rss');
+     	$crud->change_field_type('created','invisible');
+		$crud->change_field_type('updated','invisible');
 
-		$this->form_validation->set_rules('title', "'Titre'", 'trim|required');
-		$this->form_validation->set_rules('id', "'id'", 'trim|required');
-		$this->form_validation->set_rules('description', "'description'", 'trim|required');
+		$crud->callback_column('rss',array($this,'_link_view'));
+
+    	$crud->callback_before_insert(array($this,'_before_insert'));
+
+   	 	$crud->unset_edit_fields('created');
+    	$crud->callback_before_update(array($this,'_before_update'));
+
+    	$crud->callback_after_insert(array($this,'_after_insert_flux'));
+
+		$output = $crud->render();
+
+		$this->data['main_view']  = 'dashboard';
+		$this->data['main_frame'] = 'fragments/showCrud';
+		$this->data['crud']       = $output;
+		$this->load->view('template', $this->data);
+		return false;
+	}
+	
+	public function tools() {
+		$crud = new grocery_CRUD();
+		$crud->set_table('tools');
+        $crud->set_subject('Outil');
+
+     	$crud->change_field_type('created','invisible');
+		$crud->change_field_type('updated','invisible');
+    	$crud->callback_before_insert(array($this,'_before_insert'));
+   	 	$crud->unset_edit_fields('created');
+    	$crud->callback_before_update(array($this,'_before_update'));
+
+   	 	$crud->unset_add_fields('serialization');
+
+		$crud->add_action("Modifier le corps de l'outil"
+			, ''
+			, 'admin/edit_scales'
+			, 'edit-inside-icon');
+
+		$crud->add_action("Voir l'outil"
+			, ''
+			, 'reader/scales'
+			, 'play-icon');
+ 
+        $output = $crud->render();
 		
-		if ($this->form_validation->run() == FALSE)
-		{
-			$this->data['main_view'] = 'dashboard';
-			$this->data['main_frame'] = 'admin/addFlux';
-			$this->load->view('template', $this->data);
-			return false;
-		}
+		$this->data['main_view']  = 'dashboard';
+		$this->data['main_frame'] = 'fragments/showCrud';
+		$this->data['crud']       = $output;
+		$this->load->view('template', $this->data);
+		return false;
+	}
 
-		$id = $this->input->post('id');
-		$title = $this->input->post('title');
-		$description = $this->input->post('description');
+	function _link_view($value, $row) {
+		return "<a target='_blank' href='".$value."'>$value</a>";
+	}
 
-		$flux = $this->Flux->get($id);
-		if (!$flux) {
-			$flux = $this->Flux->add($id, $title, $description);
-		}
+	function _before_insert($post_array) {
+		$now = date('Y-m-d H:i:s');
+		$post_array['created'] = $now;
+		$post_array['updated'] = $now;
+		return $post_array;	
+	}  
+	 
+	function _before_update($post_array) {
+		$post_array['updated'] = date('Y-m-d H:i:s');
+		return $post_array;	
+	}  
 
-		$this->session->set_flashdata("alert", "Le flux '".$title."' a été crée.");
- 		redirect('admin/addFlux');
-
+	function _after_insert_flux($post_array,$primary_key) {
+		$data = array('rss' => 'http://stadja.net:8080/rss/'.$primary_key.'.xml');
+		return $this->db->update('flux', $data, array('idflux' => $primary_key)); 
 	}
 
 	public function invit()
@@ -108,7 +166,7 @@ class admin extends CI_Controller {
 		$this->load->helper('string');
 
 		$invitation_id = random_string('unique');
-		$user_invitation = array('user' => $user->id,
+		$user_invitation = array('user' => $user->getid(),
 						'invitation' => $invitation_id);
 		$this->db->insert('user_invitation', $user_invitation);
 

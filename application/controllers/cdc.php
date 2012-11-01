@@ -62,7 +62,7 @@ class cdc extends CI_Controller {
 		$now = date('Y-m-d H:i:s');
 		$post_array['created'] = $now;
 		$post_array['updated'] = $now;
-		$post_array['flux'] = $this->uri->segment(3);
+		$post_array['idflux'] = $this->uri->segment(3);
 		$post_array['author'] = $this->user->getId();
 		return $post_array;	
 	}  

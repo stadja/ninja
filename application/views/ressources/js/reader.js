@@ -4,15 +4,22 @@ jQuery.support.cors = true;
 * Application 
 **************************/ 
 RSSreader = Ember.Application.create({  
-	read: function(fluxId, isExternal){
-		RSSreader.rssCollection.read(fluxId, isExternal);
+	rootElement: '#fluxRSS',
+	read: function(fluxId, isExternal, minPreview, maxPreview){
+		isExternal = 1;
+		if (minPreview == undefined) {
+			minPreview = 0;
+		}
+		if (maxPreview == undefined) {
+			maxPreview = 1;
+		}
+		RSSreader.rssCollection.read(fluxId, isExternal, minPreview, maxPreview);
 	},
 	init: function() {
 		this._super();
 		//alert('hop');
 	}
 });
-
 
 /**************************
 * Models 
@@ -32,8 +39,16 @@ RSSreader.news = Ember.Object.extend({
 RSSreader.RSSflux = Ember.Object.extend({ 
 	id: null, 
 	lastUpdate: 0,
-	newsCollection: null,
-	preview: null,
+	newsCollection: [],
+	minPreview: 0,
+	maxPreview: 3,
+	preview: function() {
+		var minPreview = this.get('minPreview');
+		var maxPreview = this.get('maxPreview');
+		return this.get('newsCollection').filter(function(item, index, self) {
+				if ((index >= minPreview) && (index <= maxPreview)) { return true; }
+			});
+	}.property('newsCollection.@each'),
 	testBinding: function() {
 		var id = this.get('id');
 		var lastUpdate = this.get('lastUpdate');
@@ -42,11 +57,8 @@ RSSreader.RSSflux = Ember.Object.extend({
 	init: function(){ 
 			this._super();
 			this.newsCollection = Ember.ArrayController.create({
-				content: []
-			}); 
-			this.preview = Ember.ArrayController.create({
-				content: []
-			}); 
+				content: [],
+			});  
 		},
 	update: function(fluxId) {
 		var me = this;
@@ -56,10 +68,9 @@ RSSreader.RSSflux = Ember.Object.extend({
 				jsonWannabeFlux.id = me.get('id');
 				jsonWannabeFlux.lastUpdate = data.lastUpdate;
 				jsonWannabeFlux.newsCollection = [];
+				
 				me.set('lastUpdate', data.lastUpdate);
 				me.newsCollection.clear();
-				me.preview.clear();
-				var i = 0;
 				$(data.articles).each(function(index, value){ 
 					var jsonNews = new Object();
 					jsonNews.title = value.title;
@@ -71,10 +82,6 @@ RSSreader.RSSflux = Ember.Object.extend({
 						link: value.link
 					}); 
 					me.newsCollection.pushObject(news);
-					if (i < 5) {
-						me.preview.pushObject(news);
-						i++;
-					}
 					jsonWannabeFlux.newsCollection.push(jsonNews);
 				});
 				if(typeof localStorage!='undefined') {
@@ -91,7 +98,26 @@ RSSreader.RSSflux = Ember.Object.extend({
 /************************** 
 * Views 
 **************************/ 
+// Handlebars.registerHelper("for", function forLoop(arrayToSummarize, options) {
+// 	var context = (options.fn.contexts && options.fn.contexts[0]) || this;
+// 	var data = Ember.Handlebars.get(context, arrayToSummarize, options.fn);
 
+// 	console.log($(data.content));
+
+
+// 	// var startIndex = options.hash.start || 0;
+// 	// var endIndex = options.hash.end || data.content.length;
+// 	// if (endIndex > data.content.length) {
+// 	// 	endIndex = data.content.length - 1;
+// 	// }
+// 	// if (startIndex >= data.content.length) {
+// 	// 	startIndex = 0;
+// 	// }
+
+// 	// for(i = startIndex; i <= endIndex; i++) {
+// 	//     options(data.content[i]);
+// 	// }
+// });
 
 /************************** 
 * Controllers 
@@ -102,11 +128,11 @@ RSSreader.rssCollection = Ember.ArrayController.create({
 	init: function(){ 
 		this._super();
 		flux = [];
-		previewRss = [];
 	}, 
-	read: function(fluxId, isExternal) {
+	read: function(fluxId, isExternal, minPreview, maxPreview) {
 		rssCollection = this;
-
+		fluxNumber = fluxId;
+		fluxId = 'flux'+fluxId;
 		flux[fluxId] = rssCollection.get(fluxId);
 		if (!flux[fluxId]) {
 			flux[fluxId] = '';
@@ -124,7 +150,6 @@ RSSreader.rssCollection = Ember.ArrayController.create({
 						id: jsonObject.id,
 						lastUpdate: jsonObject.lastUpdate
 					});
-					var j = 0;
 					$(jsonObject.newsCollection).each(function(index, value){ 
 						var news = RSSreader.news.create({ 
 							title: value.title,
@@ -132,26 +157,21 @@ RSSreader.rssCollection = Ember.ArrayController.create({
 							link: value.link
 						}); 
 						flux[fluxId].newsCollection.pushObject(news);
-						if (j < 5) {
-							flux[fluxId].preview.pushObject(news);
-							j++;
-						}
 					});
 				}
 			}
 /**/
 			if (flux[fluxId] == '') {
 				flux[fluxId] = RSSreader.RSSflux.create({ 
-					id: fluxId,
-					// previewRss: function() {
-					// 	return this.get('newsCollection');
-					// }.property()
+					id: fluxNumber,
+					minPreview: minPreview,
+					maxPreview: maxPreview
 				});
 			}
 
 		}
 		rssCollection.set(fluxId, flux[fluxId]);
-		flux[fluxId].update(fluxId);
+		flux[fluxId].update(fluxId, fluxNumber);
 
 	}
 });

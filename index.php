@@ -1,5 +1,7 @@
 <?php
 
+setlocale(LC_TIME, "fr_FR.UTF-8");
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT

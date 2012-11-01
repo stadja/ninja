@@ -39,9 +39,16 @@
                 {{score}} / {{maximum}}
             </div>
         {{/each}}
-         <b>{{Tools.scaleTool.score}}</b> /  <b>{{Tools.scaleTool.maximum}}</b>
+        <hr/>
+        <h1>Résultat: {{Tools.scaleTool.score}} /  {{Tools.scaleTool.maximum}}</h1>
 	</form>
     </script>
+    <hr/>
+    <?php if ($scale->results != ''): ?>
+        <h1>Explication des résultats</h1>
+        <?php echo $scale->results; ?>
+        <hr/>
+    <?php endif ?>
 	</div>
 
     <a id='printit' onclick="javascript:window.print();return false;" href="#">Imprimer le test</a>

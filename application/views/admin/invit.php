@@ -4,8 +4,8 @@
 	set_js_fx("$('input, textarea').placeholder();
 		$('select, input, input:checkbox, input:radio, input:file').uniform();");
 ?>
-<articles>
-	<article>
+
+<div id="main" class="wrapper clearfix">
 <div class="info message">
                  <h3>Utilisateur ajout&eacute; !</h3>
                  <p id="info">This is just an info notification message.</p>
@@ -34,5 +34,4 @@
 		<input type="submit" id="submit" value="Inviter">
 	</fieldset>
 </form>
-</article>
-</articles>
+</div>
