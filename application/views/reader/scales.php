@@ -1,5 +1,5 @@
 <?php 
-	set_js_path(array("libs/jquery.uniform.min", "libs/jquery.placeholder.min", "libs/ember-0.9.8.1.min"));
+	set_js_path(array("libs/jquery.uniform.min", "libs/jquery.placeholder.min", "libs/handlebars", "libs/ember"));
     set_js_path('scales');
     set_css_path("libs/uniform.default");
     // set_css_path("print");
@@ -19,7 +19,7 @@
     <input type="text" name="name" id="name" placeholder="Nom">
     <hr>
 
-	<div class='scale'>
+	<div class='scale' id='scaleToolRoot'>
     <script type="text/x-handlebars"> 
 		<h1>{{Tools.scaleTool.title}}</h1>
 

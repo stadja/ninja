@@ -5,6 +5,7 @@ jQuery.support.cors = true;
 * Application 
 **************************/ 
 Tools = Ember.Application.create({ 
+	rootElement: '#scaleToolRoot',
 	setId: function(toolId) {
 		Tools.scaleTool.set('id', toolId); 
 	},
