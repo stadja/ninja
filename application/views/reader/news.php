@@ -1,9 +1,9 @@
 <?php 
 	set_css_path('adelos/style_fluxNews');
-	set_js_path('libs/ember-0.9.8.1.min');
+	set_js_path(array('libs/handlebars','libs/ember'));
 	set_js_path(array("reader"));
 	
-	set_js_fx("RSSreader.read(".$news->getFlux()->getId().", 0, 0, 10);");
+	set_js_fx("RSSreader.read(".$news->getFlux()->getId().", 0);");
 ?>
 <!-- ==========================================
 	#header-content - Welcome and Admin buttons 
@@ -35,6 +35,7 @@
 
 		<?php echo $news->getText(); ?>
 
+
 		<div class="article-info">
 			<ul>
 				<?php if ($news->getFlux()->isExternal()): ?>
@@ -58,11 +59,13 @@
 			<div class="fluxNews" id="<?php echo $news->getFlux()->getId(); ?>">
 				<ul id='fluxRSS'>
 					<script type="text/x-handlebars"> 
-						{{#each RSSreader.rssCollection.flux<?php echo $news->getFlux()->getId(); ?>.preview}}
-							<li style="">
-								<h3>{{{openingLink}}}{{{title}}}</a></h3>
-							</li>
-						{{/each}}
+						{{#bind RSSreader.rssCollection.flux<?php echo $news->getFlux()->getId(); ?>.preview}}
+							{{#for this end=10}}
+								<li style="">
+									<h3>{{linkTo link title}}</h3>
+								</li>
+							{{/for}}
+						{{/bind}}
 					</script>
 				</ul>
 			</div>

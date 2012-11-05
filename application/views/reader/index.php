@@ -3,7 +3,7 @@
 	set_js_path(array("reader"));
 	
 	foreach($user->getSubscribedFlux() as $flux) {
-		set_js_fx("RSSreader.read(".$flux->getId().",".(int)$flux->isExternal().", 0, 3);");
+		set_js_fx("RSSreader.read(".$flux->getId().",".(int)$flux->isExternal().");");
 	}
 
 	// set_js_fx("
@@ -26,19 +26,15 @@
 				<section>
 					<h2 style='color:red'><?php echo $flux->getTitle(); ?></h2>
 						<ul>
-							{{#each RSSreader.rssCollection.flux<?php echo $flux->getId(); ?>.preview}}
-								<li style="">
-									<?php if ($flux->isExternal()): ?>
-										<h3>{{{openingExternalLink}}}{{{title}}}</a></h3>
-									<?php else : ?>
-										<h3>{{{openingLink}}}{{{title}}}</a></h3>
-									<?php endif; ?>
-
-									{{{description}}}
-								</li>
-							{{/each}}
+							{{#bind RSSreader.rssCollection.flux<?php echo $flux->getId();?>.preview}}
+								{{#for this end=4}}
+									<li style="">
+										<h3>{{linkTo link title isExternal='<?php echo $flux->isExternal(); ?>'}}</h3>
+										{{{description}}}
+									</li>
+								{{/for}}
+							{{/bind}}
 						</ul>
-					</div>
 				</section>
 			<?php endforeach; ?>
 		</script>

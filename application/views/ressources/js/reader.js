@@ -5,15 +5,8 @@ jQuery.support.cors = true;
 **************************/ 
 RSSreader = Ember.Application.create({  
 	rootElement: '#fluxRSS',
-	read: function(fluxId, isExternal, minPreview, maxPreview){
-		isExternal = 1;
-		if (minPreview == undefined) {
-			minPreview = 0;
-		}
-		if (maxPreview == undefined) {
-			maxPreview = 1;
-		}
-		RSSreader.rssCollection.read(fluxId, isExternal, minPreview, maxPreview);
+	read: function(fluxId, isExternal){
+		RSSreader.rssCollection.read(fluxId, isExternal);
 	},
 	init: function() {
 		this._super();
@@ -40,14 +33,8 @@ RSSreader.RSSflux = Ember.Object.extend({
 	id: null, 
 	lastUpdate: 0,
 	newsCollection: [],
-	minPreview: 0,
-	maxPreview: 3,
 	preview: function() {
-		var minPreview = this.get('minPreview');
-		var maxPreview = this.get('maxPreview');
-		return this.get('newsCollection').filter(function(item, index, self) {
-				if ((index >= minPreview) && (index <= maxPreview)) { return true; }
-			});
+		return this.get('newsCollection').toArray();
 	}.property('newsCollection.@each'),
 	testBinding: function() {
 		var id = this.get('id');
@@ -98,26 +85,31 @@ RSSreader.RSSflux = Ember.Object.extend({
 /************************** 
 * Views 
 **************************/ 
-// Handlebars.registerHelper("for", function forLoop(arrayToSummarize, options) {
-// 	var context = (options.fn.contexts && options.fn.contexts[0]) || this;
-// 	var data = Ember.Handlebars.get(context, arrayToSummarize, options.fn);
+Handlebars.registerHelper("for", function forLoop(arrayToSummarize, options) {
+	var data = Ember.Handlebars.get(this, arrayToSummarize, options.fn);
 
-// 	console.log($(data.content));
+	if (data.length == 0) {
+		return 'Chargement...';
+	}
 
+  	filtered = data.slice(options.hash.start || 0, options.hash.end || data.length);
 
-// 	// var startIndex = options.hash.start || 0;
-// 	// var endIndex = options.hash.end || data.content.length;
-// 	// if (endIndex > data.content.length) {
-// 	// 	endIndex = data.content.length - 1;
-// 	// }
-// 	// if (startIndex >= data.content.length) {
-// 	// 	startIndex = 0;
-// 	// }
+  	var ret = "";
+	for(var i=0; i< filtered.length; i++) {
+		ret = ret + options.fn(filtered[i]);
+	}
+	return ret;		
+});
 
-// 	// for(i = startIndex; i <= endIndex; i++) {
-// 	//     options(data.content[i]);
-// 	// }
-// });
+Handlebars.registerHelper('linkTo', function(url, title, options) {
+  var url = Ember.Handlebars.get(this, url, options);
+  var title = Ember.Handlebars.get(this, title, options);
+  if (options.hash.isExternal || 0) {
+	return new Handlebars.SafeString('<a target="_blank" href="'+url+'"">'+title+'</a>');
+  } else {
+	return new Handlebars.SafeString('<a href="'+url+'"">'+title+'</a>');
+  }
+});
 
 /************************** 
 * Controllers 
@@ -129,7 +121,7 @@ RSSreader.rssCollection = Ember.ArrayController.create({
 		this._super();
 		flux = [];
 	}, 
-	read: function(fluxId, isExternal, minPreview, maxPreview) {
+	read: function(fluxId, isExternal) {		
 		rssCollection = this;
 		fluxNumber = fluxId;
 		fluxId = 'flux'+fluxId;
@@ -138,11 +130,11 @@ RSSreader.rssCollection = Ember.ArrayController.create({
 			flux[fluxId] = '';
 			if(typeof localStorage!='undefined') {
 			// if(false) {
-				var fluxStored = localStorage.getItem('fluxRSS_'+fluxId);
+				var fluxStored = localStorage.getItem('fluxRSS_'+fluxNumber);
 				// Vérification de la présence du compteur
 				if(fluxStored != null) {
 					var jsonObject = JSON.parse(fluxStored);
-					if ((isExternal == 1)) {
+					if (isExternal == 1) {
 						jsonObject.lastUpdate = 0;
 					}
 
@@ -163,9 +155,7 @@ RSSreader.rssCollection = Ember.ArrayController.create({
 /**/
 			if (flux[fluxId] == '') {
 				flux[fluxId] = RSSreader.RSSflux.create({ 
-					id: fluxNumber,
-					minPreview: minPreview,
-					maxPreview: maxPreview
+					id: fluxNumber
 				});
 			}
 
