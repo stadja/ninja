@@ -10,6 +10,8 @@
 */cache/*
 */cache/!index.html
 */sftp-config.json
+*sftp-config.json
+sftp-config.json
 
 #################
 ## Eclipse
