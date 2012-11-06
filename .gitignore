@@ -9,6 +9,7 @@
 */logs/!index.html
 */cache/*
 */cache/!index.html
+*/sftp-config.json
 
 #################
 ## Eclipse
@@ -173,3 +174,4 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+

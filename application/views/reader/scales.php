@@ -32,7 +32,9 @@
                     <div class='question'>
                         <label>
                             {{label}}
-                            {{view Ember.Checkbox checkedBinding="isChecked"}} / <b>{{value}}</b>
+                            {{#if question}}
+                                {{view Ember.Checkbox checkedBinding="isChecked"}} / <b>{{value}}</b>
+                            {{/if}}
                         </label>
                     </div>
                 {{/each}}

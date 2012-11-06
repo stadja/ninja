@@ -23,14 +23,27 @@ Tools = Ember.Application.create({
 				questions: [],
 			});
 
-			jQuery.each(value.questions, function(questionIndex, questionValue){
-				Tools.questionTemp = Tools.question.create({
-					id: questionIndex, 
-					label: questionValue.label,
-					value: questionValue.value,
-					fatherSet: Tools.questionSetTemp,
-				});
-				Tools.questionSetTemp.get('questions').pushObject(Tools.questionTemp);
+			jQuery.each(value.questions, function(elementIndex, elementValue){
+				switch(elementValue.type) {
+					case 'text':
+						Tools.elementTemp = Tools.text.create({
+							id: elementIndex, 
+							label: elementValue.label,
+							fatherSet: Tools.questionSetTemp,
+						});
+					break;
+					case 'question':
+					default:
+						Tools.elementTemp = Tools.question.create({
+							id: elementIndex, 
+							label: elementValue.label,
+							value: elementValue.value,
+							fatherSet: Tools.questionSetTemp,
+						});
+					break;
+				}
+
+				Tools.questionSetTemp.get('questions').pushObject(Tools.elementTemp);
 			});
 			Tools.scaleTool.get('questionSets').pushObject(Tools.questionSetTemp);
 		});
@@ -95,7 +108,9 @@ Tools.questionSet = Ember.Object.extend({
 		var questions = this.get('questions');
 		var maximum = 0;
 		$(questions).each(function(index, value){ 
-			maximum += parseInt(value.get('value')); 
+			if(value.get('value') > 0) {
+				maximum += parseInt(value.get('value')); 
+			}
 		});
 		return maximum;
 	}.property('questions.@each.value'),
@@ -103,18 +118,41 @@ Tools.questionSet = Ember.Object.extend({
 		var score = 0;
 		var questions = this.get('questions');
 		$(questions).each(function(index, value){ 
-			score += parseInt(value.get('score')); 
+			if(value.get('score') > 0) {
+				score += parseInt(value.get('score')); 
+			}
 		});
 		return score;
 	}.property('questions.@each.score'),
+	changeTypeElement: function(element) {
+		var indexElement = this.get('questions').indexOf(element);
+		if (element.get('type') == 'text') {
+			this.get('questions').replace(indexElement, 1, [this.createQuestion(element)]);
+		} else {
+			this.get('questions').replace(indexElement, 1, [this.createText(element)]);
+		}
+	},
+	createQuestion: function(element) {
+		var prefilled = (element != undefined);
+		return Tools.question.create({
+					id: (prefilled) ? element.get('id') : this.questions.length, 
+					label: (prefilled) ? element.get('label') : 'Question',
+					fatherSet: (prefilled) ? element.get('fatherSet') : this
+				});
+	},
+	createText: function(element) {
+		var prefilled = (element != undefined);
+		return Tools.textTemp = Tools.text.create({
+					id: (prefilled) ? element.get('id') : this.questions.length, 
+					label: (prefilled) ? element.get('label') : 'Texte',
+					fatherSet: (prefilled) ? element.get('fatherSet') : this
+				});
+	},
 	addQuestion: function() {
-		Tools.questionTemp = Tools.question.create({
-			id: this.questions.length, 
-			label: 'Question',
-			value: 'Score',
-			fatherSet: this
-		});
-		this.get('questions').pushObject(Tools.questionTemp);
+		this.get('questions').pushObject(this.createQuestion());
+	},
+	addText: function() {
+		this.get('questions').pushObject(this.createText());
 	},
 	serialize: function() {
 		
@@ -133,12 +171,22 @@ Tools.questionSet = Ember.Object.extend({
 	}
 });
 
-Tools.question = Ember.Object.extend({ 
+Tools.element = Ember.Object.extend({ 
 	id: null,
 	label: '',
-	isChecked : false,
-	value: 0,
 	fatherSet: null,
+	type: 'element',
+	serialize: function() {
+		var output = '"'+this.get('id')+'" : { "label" : "'+this.get('label')+'", "type" : "'+this.get('type')+'" }'; 
+		return output;
+	}
+});
+
+Tools.question = Tools.element.extend({ 
+	isChecked : false,
+	value: 'Score',
+	question: 1,
+	type: 'question',
 	score: function() {
 		if (!this.get('isChecked')) {
 			return 0;
@@ -146,11 +194,13 @@ Tools.question = Ember.Object.extend({
 		return this.get('value');
 	}.property('isChecked'),
 	serialize: function() {
-		
-		var output = '"'+this.get('id')+'" : { "label" : "'+this.get('label')+'", "value" : "'+this.get('value')+'" }'; 
-
+		var output = '"'+this.get('id')+'" : { "label" : "'+this.get('label')+'", "value" : "'+this.get('value')+'", "type" : "'+this.get('type')+'" }'; 
 		return output;
 	}
+});
+
+Tools.text = Tools.element.extend({ 
+	type: 'text'
 });
 
 
@@ -161,21 +211,28 @@ Tools.question = Ember.Object.extend({
 
 Tools.EditScaleView = Ember.View.extend({
     addQuestion: function(event) {
-    	event.context.bindingContext.addQuestion();
+    	this.bindingContext.addQuestion();
 	},
-	suppressQuestion: function(event) {
-		var question = event.context.bindingContext;
-		question.get('fatherSet').get('questions').removeObject(question);
+    addText: function(event) {
+    	this.bindingContext.addText();
+	},
+	changeTypeElement: function(event) {
+		var element = this.bindingContext;
+		element.get('fatherSet').changeTypeElement(element);
+	},
+	suppressElement: function(event) {
+		var element = this.bindingContext;
+		element.get('fatherSet').get('questions').removeObject(element);
 	},
     addQuestionSet: function(event) {
-    	event.context.addQuestionSet();		
+    	Tools.scaleTool.addQuestionSet();		
 	},
     suppressQuestionSet: function(event) {
-    	Tools.scaleTool.get('questionSets').removeObject(event.context.bindingContext);
+    	Tools.scaleTool.get('questionSets').removeObject(this.bindingContext);
 	},
 	saveScale: function(event) {
-		var serialized = event.context.serialize();	
-		var scaleId = event.context.get('id');	
+		var serialized = Tools.scaleTool.serialize();	
+		var scaleId = Tools.scaleTool.get('id');	
 		$.ajax({
 		  type: 'POST',
 		  url: '/ninja/admin/save_scale',

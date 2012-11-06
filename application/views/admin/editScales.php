@@ -1,5 +1,5 @@
 <?php 
-	set_js_path(array("libs/jquery.uniform.min", "libs/jquery.placeholder.min", "libs/ember-0.9.8.1.min"));
+	set_js_path(array("libs/jquery.uniform.min", "libs/jquery.placeholder.min", "libs/handlebars", "libs/ember"));
     set_js_path('scales');
 	set_css_path("libs/uniform.default");
     set_js_fx("$('input, textarea').placeholder();
@@ -13,7 +13,7 @@
 
 
 <div id="main" class="wrapper clearfix">
-	<div class='scale'>
+	<div class='scale' id='scaleToolRoot'>
     <script type="text/x-handlebars"> 
 		<h1>{{view Ember.TextArea valueBinding="Tools.scaleTool.title"}}</h1>
 
@@ -33,21 +33,18 @@
                     <div class='question'>
                         <label>
                             {{view Ember.TextArea valueBinding="label"}}
-                            {{view Ember.Checkbox checkedBinding="isChecked"}} / <b>{{view Ember.TextField valueBinding="value"}}</b>
-                            {{#view Tools.EditScaleView contentBinding="this"}}
-                                <a {{action "suppressQuestion" on="click"}}>
-                                Supprimer la question
-                                </a>
-                            {{/view}}
+                                {{#if question}}
+                                    {{view Ember.Checkbox checkedBinding="isChecked"}} / <b>{{view Ember.TextField valueBinding="value"}}</b>
+                                {{/if}}
+                                {{#view Tools.EditScaleView contentBinding="this"}}
+                                    <a {{action "changeTypeElement" on="click"}}> Changer le type </a> / <a {{action "suppressElement" on="click"}}> Supprimer </a>
+                                {{/view}}
                         </label>
-
-               
                     </div>
+                    <div class='clearfix'></div>
                 {{/each}}
                 {{#view Tools.EditScaleView contentBinding="this"}}
-                    <a {{action "addQuestion" on="click"}}>
-                        Ajouter une question
-                    </a>
+                    Ajouter <a {{action "addQuestion" on="click"}}> une question </a> / <a {{action "addText" on="click"}}> un texte </a>
                 {{/view}}
                 {{score}} / {{maximum}}
             </div>
