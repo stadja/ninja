@@ -19,7 +19,7 @@ Tools = Ember.Application.create({
 		jQuery.each(Tools.toolDescription.questionSets, function(index, value) {
 			Tools.questionSetTemp = Tools.questionSet.create({
 				id : index,
-				label: value.title,
+				label: unescape(value.title),
 				questions: [],
 			});
 
@@ -28,7 +28,7 @@ Tools = Ember.Application.create({
 					case 'text':
 						Tools.elementTemp = Tools.text.create({
 							id: elementIndex, 
-							label: elementValue.label,
+							label: unescape(elementValue.label),
 							fatherSet: Tools.questionSetTemp,
 						});
 					break;
@@ -36,7 +36,7 @@ Tools = Ember.Application.create({
 					default:
 						Tools.elementTemp = Tools.question.create({
 							id: elementIndex, 
-							label: elementValue.label,
+							label: unescape(elementValue.label),
 							value: elementValue.value,
 							fatherSet: Tools.questionSetTemp,
 						});
@@ -165,7 +165,7 @@ Tools.questionSet = Ember.Object.extend({
 				output += ', ';
 			}
 		});
-		output += '}, '+'"title" : "'+this.get('label')+'" }';
+		output += '}, '+'"title" : "'+escape(this.get('label'))+'" }';
 
 		return output;
 	}
@@ -177,7 +177,7 @@ Tools.element = Ember.Object.extend({
 	fatherSet: null,
 	type: 'element',
 	serialize: function() {
-		var output = '"'+this.get('id')+'" : { "label" : "'+this.get('label')+'", "type" : "'+this.get('type')+'" }'; 
+		var output = '"'+this.get('id')+'" : { "label" : "'+escape(this.get('label'))+'", "type" : "'+this.get('type')+'" }'; 
 		return output;
 	}
 });
@@ -194,7 +194,7 @@ Tools.question = Tools.element.extend({
 		return this.get('value');
 	}.property('isChecked'),
 	serialize: function() {
-		var output = '"'+this.get('id')+'" : { "label" : "'+this.get('label')+'", "value" : "'+this.get('value')+'", "type" : "'+this.get('type')+'" }'; 
+		var output = '"'+this.get('id')+'" : { "label" : "'+escape(this.get('label'))+'", "value" : "'+this.get('value')+'", "type" : "'+this.get('type')+'" }'; 
 		return output;
 	}
 });

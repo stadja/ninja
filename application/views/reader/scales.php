@@ -38,11 +38,11 @@
                         </label>
                     </div>
                 {{/each}}
-                {{score}} / {{maximum}}
+                {{score}} <?php if($scale->type != 'QCM'): ?>/ {{maximum}}<?php endif; ?>
             </div>
         {{/each}}
         <hr/>
-        <h1>Résultat: {{Tools.scaleTool.score}} /  {{Tools.scaleTool.maximum}}</h1>
+        <h1>Résultat: {{Tools.scaleTool.score}} <?php if($scale->type != 'QCM'): ?> /  {{Tools.scaleTool.maximum}}</h1><?php endif; ?>
 	</form>
     </script>
     <hr/>

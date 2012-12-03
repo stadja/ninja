@@ -46,7 +46,7 @@
                 {{#view Tools.EditScaleView contentBinding="this"}}
                     Ajouter <a {{action "addQuestion" on="click"}}> une question </a> / <a {{action "addText" on="click"}}> un texte </a>
                 {{/view}}
-                {{score}} / {{maximum}}
+                {{score}} <?php if($scale->type != 'QCM'): ?>/ {{maximum}}<?php endif; ?>
             </div>
         {{/each}}
         {{#view Tools.EditScaleView contentBinding="this"}}
@@ -54,7 +54,7 @@
                 Ajouter un set de questions
             </a>
         {{/view}}
-         <b>{{Tools.scaleTool.score}}</b> /  <b>{{Tools.scaleTool.maximum}}</b>
+         <b>{{Tools.scaleTool.score}}</b> <?php if($scale->type != 'QCM'): ?>/  <b>{{Tools.scaleTool.maximum}}</b><?php endif; ?>
         <div>
             {{#view Tools.EditScaleView contentBinding="this"}}
                 <a {{action "saveScale" on="click" context="Tools.scaleTool"}}>
