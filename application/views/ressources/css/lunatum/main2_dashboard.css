@@ -1,0 +1,151 @@
+/* ==============
+    MOBILE: Main
+   ============== */
+
+
+/* === Bulb === */
+
+.bulbWrap {
+    margin: 1% 1%;
+    padding: 0 0 1% 0;
+    background: rgba(255,255,255,1);
+    border-radius: 2px;
+    border-bottom: 1px solid #dadada;
+    border-right: 1px solid #e8e8e8;
+    border-left: 1px solid #e8e8e8;
+}
+
+.bulbWrap a{
+    color: black;
+    text-decoration: none;
+}
+
+.bulbTitle {
+    padding: 10px 0 5px 4%;
+    margin: 0;
+    list-style-type: none;
+}
+
+.bulbTitle li:first-child{
+    padding: 0 8px 0 0;
+    font-weight: bold;
+    line-height: 1.4em;
+    display:inline;
+}
+
+.bulbTitle li:last-child{
+    color: gray;
+    font-size: 0.8em;
+    display: inline;
+    white-space: nowrap;
+    font-style: italic;
+    padding-right: 5px;
+}
+
+.bulbTitle li:last-child a{
+    color: gray;
+}
+
+.bulbTitle li:last-child a:hover{
+    text-decoration: underline;
+}
+
+.bulbLogo {
+    float: right;
+    width: 70px;
+    border-radius: 0 0 0 10px;
+    background: url(../../img/lunatum/ffc.jpeg); 
+}
+
+.bulbContent {
+    padding: 5px 0 0 0;
+    margin: 0;
+    list-style-type:none;
+}
+
+.bulbContent li:last-of-type{
+    border-bottom: 0;
+}
+
+.bulbContent img{
+    margin-right: 6px;
+    opacity: .7;
+}
+
+.bulbNews {
+    border-bottom: 1px solid #E8E8E8;
+    font-size: 0.9em; 
+}
+
+.bulbNews a {
+    width: 93%;
+    height: 100%;
+    display: block;
+    padding: 5px 3% 5px 4%;
+}
+
+.bulbNews a:hover {
+    background: #f5f5f5;
+}
+
+.bulbNews p {
+    margin: 0px;
+    display: inline;
+}
+
+.bulbDates {
+    display: none;
+}
+
+.bulbDates a{
+    padding: 5px 3% 5px 4%;
+    text-decoration: none;
+    color: gray;
+    font-size: 0.8em;
+    background: #f5f5f5;
+    border-radius: 0 2px 2px 0;
+}
+
+
+@media only screen and (min-width: 768px) {
+
+    .header-wrapper {
+        max-width: 1011px;
+        margin: 0 auto;
+    }
+
+/* ============
+    WIDE: Main
+   ============ */
+
+    .bulbWrap {
+        width: 47.5%;
+        float: left;
+        display: inline;
+    }
+
+}
+
+@media only screen and (min-width: 1124px) {
+
+/* ============
+    WIDE: Main
+   ============ */
+
+    .bulbWrap {
+        width: 31%;
+    }
+
+}
+
+@media only screen and (min-width: 1300px) {
+
+/* ===============
+    Maximal Width
+   =============== */
+
+    .wrapper {
+        width: 1200px; /* 1140px - 10% for margins */
+        margin: 0 auto;
+    }
+}

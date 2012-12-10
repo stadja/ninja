@@ -38,7 +38,7 @@ class admin extends CI_Controller {
 		{
 			$this->data['main_view'] = 'dashboard';
 			$this->data['main_frame'] = 'admin/changeFluxRights';
-			$this->load->view('template', $this->data);
+			$this->load->view('lunatum/template', $this->data);
 			return false;
 		}
 	}
@@ -64,10 +64,10 @@ class admin extends CI_Controller {
 
 		$output = $crud->render();
 
-		$this->data['main_view']  = 'dashboard';
-		$this->data['main_frame'] = 'fragments/showCrud';
+		$this->data['main_view']  = 'lunatum/dashboard';
+		$this->data['main_frame'] = 'lunatum/fragments/showCrud';
 		$this->data['crud']       = $output;
-		$this->load->view('template', $this->data);
+		$this->load->view('lunatum/template', $this->data);
 		return false;
 	}
 	
@@ -99,7 +99,7 @@ class admin extends CI_Controller {
 		$this->data['main_view']  = 'dashboard';
 		$this->data['main_frame'] = 'fragments/showCrud';
 		$this->data['crud']       = $output;
-		$this->load->view('template', $this->data);
+		$this->load->view('lunatum/template', $this->data);
 		return false;
 	}
 
@@ -138,7 +138,7 @@ class admin extends CI_Controller {
 		{
 			$this->data['main_view'] = 'dashboard';
 			$this->data['main_frame'] = 'admin/invit';
-			$this->load->view('template', $this->data);
+			$this->load->view('lunatum/template', $this->data);
 			return false;
 		}
 
@@ -183,7 +183,7 @@ class admin extends CI_Controller {
 			$this->load->model('Tools','',TRUE);
 			$this->data['scale'] = $this->Tools->get($id);
 			$this->data['toolId'] = $id;
-			$this->load->view('template', $this->data);
+			$this->load->view('lunatum/template', $this->data);
 	}
 
 	function save_scale() {

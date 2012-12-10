@@ -1,11 +1,16 @@
 <?php 
-	set_js_path(array('libs/handlebars','libs/ember'));
+	set_js_path(array('libs/handlebars','libs/ember','libs/jquery.masonry.min'));
 	set_js_path(array("reader"));
-	
 	foreach($user->getSubscribedFlux() as $flux) {
 		set_js_fx("RSSreader.read(".$flux->getId().",".(int)$flux->isExternal().");");
 	}
+	set_js_fx("$('#masonry_hook').masonry({
+  // options
+  itemSelector : 'section',
+  columnWidth : 370
+});
 
+");
 	// set_js_fx("
 	// 	$('.fluxNews').each(function(index) {
 	// 				if (RSSreader != undefined) {
@@ -22,6 +27,7 @@
 
 	<article id='fluxRSS'>
 		<script type="text/x-handlebars"> 
+			<div id="masonry_hook">
 			<?php foreach($user->getSubscribedFlux() as $flux) : ?>
 				<section>
 					<h2 style='color:red'><?php echo $flux->getTitle(); ?></h2>
@@ -37,6 +43,7 @@
 						</ul>
 				</section>
 			<?php endforeach; ?>
+			</div>
 		</script>
 	</article>
 

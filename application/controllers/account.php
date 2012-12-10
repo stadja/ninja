@@ -46,7 +46,7 @@ class account extends CI_Controller {
         $this->data['main_view'] = 'dashboard';
         $this->data['main_frame'] = 'account/main';
 
-        $this->load->view('template', $this->data);
+        $this->load->view('lunatum/template', $this->data);
 	}
 
 	/**
@@ -76,7 +76,7 @@ class account extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE) {
 			 $this->data['main_view'] = 'account/respondToInvitation';
-			 $this->load->view('template', $this->data);
+			 $this->load->view('lunatum/template', $this->data);
 			return false;
 		}
 
@@ -109,7 +109,7 @@ class account extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE) {
 			$this->data['main_view'] = 'account/login';
-			$this->load->view('template', $this->data);
+			$this->load->view('lunatum/template', $this->data);
 			return false;
 		}
 

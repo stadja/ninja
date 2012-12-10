@@ -9,8 +9,8 @@ if ( ! function_exists('setPicPath')) {
 	function setPicPath($pic) {
 		
 		//-- Définition des chemins dans lequels sont stokés les fichiers CSS.
-		$ressources_app_path = APPPATH.'views/ressources/pics/';
-		$ressources_web_path = base_url().'application/views/ressources/pics/';
+		$ressources_app_path = APPPATH.'views/ressources/img/';
+		$ressources_web_path = base_url().'application/views/ressources/img/';
 		
 		// on test l'existence du fichier...
 		if(!file_exists($ressources_app_path.$pic)) { // si il n'existe pas, on retourne une erreur

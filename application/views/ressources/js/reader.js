@@ -74,6 +74,7 @@ RSSreader.RSSflux = Ember.Object.extend({
 				if(typeof localStorage!='undefined') {
 					localStorage.setItem('fluxRSS_'+me.get('id'), JSON.stringify(jsonWannabeFlux));
 				}
+				window.setTimeout(masonry_beep,10);
 			}
 			me.update();
 		});
@@ -101,13 +102,13 @@ Handlebars.registerHelper("for", function forLoop(arrayToSummarize, options) {
 	return ret;		
 });
 
-Handlebars.registerHelper('linkTo', function(url, title, options) {
+Handlebars.registerHelper('linkTo', function(url, img, title, options) {
   var url = Ember.Handlebars.get(this, url, options);
   var title = Ember.Handlebars.get(this, title, options);
   if (options.hash.isExternal || 0) {
-	return new Handlebars.SafeString('<a target="_blank" href="'+url+'"">'+title+'</a>');
+	return new Handlebars.SafeString('<a target="_blank" href="'+url+'""><img src="'+img+'">'+title+'</a>');
   } else {
-	return new Handlebars.SafeString('<a href="'+url+'"">'+title+'</a>');
+	return new Handlebars.SafeString('<a href="'+url+'""><img src="'+img+'">'+title+'</a>');
   }
 });
 
@@ -122,6 +123,7 @@ RSSreader.rssCollection = Ember.ArrayController.create({
 		flux = [];
 	}, 
 	read: function(fluxId, isExternal) {		
+
 		rssCollection = this;
 		fluxNumber = fluxId;
 		fluxId = 'flux'+fluxId;
@@ -163,5 +165,16 @@ RSSreader.rssCollection = Ember.ArrayController.create({
 		rssCollection.set(fluxId, flux[fluxId]);
 		flux[fluxId].update(fluxId, fluxNumber);
 
+		window.setTimeout(masonry_beep,10);
 	}
 });
+
+
+masonry_beep = function() {
+	if($('#masonry_hook').length) {
+		$('#masonry_hook').masonry({
+					  // options
+					  itemSelector : '.masonry_block',
+					});
+	}
+}
