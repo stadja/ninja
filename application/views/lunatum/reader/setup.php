@@ -5,7 +5,7 @@
 		$('select, input, input:checkbox, input:radio, input:file').uniform();");
 ?>
 
-<?php $this->load->view('lunatum/fragments/headerNews', array('page_news' => 'setup')); ?>
+<?php $this->load->view(TEMPLATE_VERSION.'/fragments/headerNews', array('page_news' => 'setup')); ?>
 
 <div id="main" class="wrapper clearfix">
 	<?php echo form_open('reader/setup', array('id' => 'setup')); ?>

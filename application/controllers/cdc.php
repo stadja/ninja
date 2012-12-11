@@ -25,10 +25,10 @@ class cdc extends CI_Controller {
 
 	public function addNews() {	
 
-		$this->data['main_view'] = 'lunatum/dashboard';
-		$this->data['main_frame'] = 'lunatum/cdc/addNews';
+		$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
+		$this->data['main_frame'] = TEMPLATE_VERSION.'/cdc/addNews';
 		$this->data['page_chosen'] = 'board';
-		$this->load->view('lunatum/template', $this->data);
+		$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 		return false;
 
 	}
@@ -52,8 +52,8 @@ class cdc extends CI_Controller {
 
 		$output = $crud->render();
 		$this->data['crud']      = $output;
-		$this->data['main_view'] = 'lunatum/fragments/showCrud';
-		$this->load->view('lunatum/template', $this->data);
+		$this->data['main_view'] = TEMPLATE_VERSION.'/fragments/showCrud';
+		$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 		return false;
 
 	}

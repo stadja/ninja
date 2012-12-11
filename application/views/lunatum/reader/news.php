@@ -62,7 +62,7 @@
 						{{#bind RSSreader.rssCollection.flux<?php echo $news->getFlux()->getId(); ?>.preview}}
 							{{#for this end=10}}
 								<li style="">
-									<h3>{{linkTo link title}}</h3>
+									<h3>{{linkTo link "<?php echo setPicPath(TEMPLATE_VERSION.'/26.png'); ?>" title}}</h3>
 								</li>
 							{{/for}}
 						{{/bind}}

@@ -1,5 +1,7 @@
 <?php
 
+define('TEMPLATE_VERSION', 'lunatum');
+
 setlocale(LC_TIME, "fr_FR.UTF-8");
 
 /*

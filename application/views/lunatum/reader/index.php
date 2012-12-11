@@ -25,7 +25,7 @@
 	
 ?>
 
-<?php $this->load->view('lunatum/fragments/headerNews', array('page_news' => 'read')); ?>
+<?php $this->load->view(TEMPLATE_VERSION.'/fragments/headerNews', array('page_news' => 'read')); ?>
 
 <div id="main" class="wrapper clearfix">
 
@@ -35,7 +35,7 @@
 			<?php foreach($user->getSubscribedFlux() as $flux) : ?>
 
 				<div class="bulbWrap masonry_block">
-					<img class="bulbLogo" src="<?php echo setPicPath('lunatum/ffc.jpeg'); ?>" alt="">
+					<img class="bulbLogo" src="<?php echo setPicPath(TEMPLATE_VERSION.'/ffc.jpeg'); ?>" alt="">
 					<ul class="bulbTitle">
 						<li><a href="#"><?php echo $flux->getTitle(); ?></a></li>
 						<li><a href="#">tous les articles</a></li>
@@ -45,7 +45,7 @@
 						{{#bind RSSreader.rssCollection.flux<?php echo $flux->getId();?>.preview}}
 							{{#for this end=4}}
 								<li class="bulbNews">
-									{{linkTo link "<?php echo setPicPath('lunatum/26.png'); ?>" title isExternal='<?php echo $flux->isExternal(); ?>'}}
+									{{linkTo link "<?php echo setPicPath(TEMPLATE_VERSION.'/26.png'); ?>" title isExternal='<?php echo $flux->isExternal(); ?>'}}
 								</li>
 							{{/for}}
 						{{/bind}}

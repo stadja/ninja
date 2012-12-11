@@ -6,7 +6,7 @@
 
 ?>
 
-<?php $this->load->view('lunatum/fragments/headerNews', array('page_news' => 'write')); ?>
+<?php $this->load->view(TEMPLATE_VERSION.'/fragments/headerNews', array('page_news' => 'write')); ?>
 
 <div id="main" class="wrapper clearfix">
 	<h1>Publiez une news</h1>

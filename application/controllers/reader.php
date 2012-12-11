@@ -17,10 +17,10 @@ class reader extends CI_Controller {
 	}
 
 	function index() {
-		$this->data['main_view'] = 'lunatum/dashboard';
-		$this->data['main_frame'] = 'lunatum/reader/index';
+		$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
+		$this->data['main_frame'] = TEMPLATE_VERSION.'/reader/index';
 		$this->data['page_chosen'] = 'board';
-		$this->load->view('lunatum/template', $this->data);
+		$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 	}
 
 	function news($id = 31) {
@@ -33,10 +33,10 @@ class reader extends CI_Controller {
 		// debug($news->getAuthor());
 		// debug($news->getAuthor()->getPatronyme());
 
-		$this->data['main_view'] = 'lunatum/dashboard';
-		$this->data['main_frame'] = 'lunatum/reader/news';
+		$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
+		$this->data['main_frame'] = TEMPLATE_VERSION.'/reader/news';
 		$this->data['page_chosen'] = 'board';
-		$this->load->view('lunatum/template', $this->data);
+		$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 	}
 
 	function setup() {
@@ -45,10 +45,10 @@ class reader extends CI_Controller {
 		$this->data['flux_collection'] = $this->Flux->getFullCollection();
 
 		if (!$this->input->post('flux_setup')) {
-			$this->data['main_view'] = 'lunatum/dashboard';
-			$this->data['main_frame'] = 'lunatum/reader/setup';
+			$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
+			$this->data['main_frame'] = TEMPLATE_VERSION.'/reader/setup';
 			$this->data['page_chosen'] = 'board';
-			$this->load->view('lunatum/template', $this->data);
+			$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 			return false;
 		}
 
@@ -61,13 +61,13 @@ class reader extends CI_Controller {
 	}
 
 	function scales($id = 1) {
-			$this->data['main_view'] = 'lunatum/dashboard';
-			$this->data['main_frame'] = 'lunatum/reader/scales';
+			$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
+			$this->data['main_frame'] = TEMPLATE_VERSION.'/reader/scales';
 			
 			$this->load->model('Tools','',TRUE);
 			$this->data['scale'] = $this->Tools->get($id);
 			
-			$this->load->view('lunatum/template', $this->data);
+			$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 	}
 
 }

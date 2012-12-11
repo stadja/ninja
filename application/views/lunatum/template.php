@@ -1,5 +1,5 @@
-<?php set_css_path(array('lunatum/normalize.min', 'lunatum/main2', 'lunatum/main2_dashboard', 'lunatum/tabzilla')); ?>
-<?php set_js_path(array('lunatum/vendor/modernizr-2.6.1-respond-1.1.0.min', 'lunatum/main')); ?>
+<?php set_css_path(array(TEMPLATE_VERSION.'/normalize.min', TEMPLATE_VERSION.'/main2', TEMPLATE_VERSION.'/main2_dashboard', TEMPLATE_VERSION.'/tabzilla')); ?>
+<?php set_js_path(array(TEMPLATE_VERSION.'/vendor/modernizr-2.6.1-respond-1.1.0.min', TEMPLATE_VERSION.'/main')); ?>
 
 
 <!DOCTYPE html>

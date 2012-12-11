@@ -36,9 +36,9 @@ class admin extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->data['main_view'] = 'dashboard';
-			$this->data['main_frame'] = 'admin/changeFluxRights';
-			$this->load->view('lunatum/template', $this->data);
+			$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
+			$this->data['main_frame'] = TEMPLATE_VERSION.'/admin/changeFluxRights';
+			$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 			return false;
 		}
 	}
@@ -64,10 +64,10 @@ class admin extends CI_Controller {
 
 		$output = $crud->render();
 
-		$this->data['main_view']  = 'lunatum/dashboard';
-		$this->data['main_frame'] = 'lunatum/fragments/showCrud';
+		$this->data['main_view']  = TEMPLATE_VERSION.'/dashboard';
+		$this->data['main_frame'] = TEMPLATE_VERSION.'/fragments/showCrud';
 		$this->data['crud']       = $output;
-		$this->load->view('lunatum/template', $this->data);
+		$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 		return false;
 	}
 	
@@ -96,10 +96,10 @@ class admin extends CI_Controller {
  
         $output = $crud->render();
 		
-		$this->data['main_view']  = 'dashboard';
-		$this->data['main_frame'] = 'fragments/showCrud';
+		$this->data['main_view']  = TEMPLATE_VERSION.'/dashboard';
+		$this->data['main_frame'] = TEMPLATE_VERSION.'/fragments/showCrud';
 		$this->data['crud']       = $output;
-		$this->load->view('lunatum/template', $this->data);
+		$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 		return false;
 	}
 
@@ -136,9 +136,9 @@ class admin extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE)
 		{
-			$this->data['main_view'] = 'dashboard';
-			$this->data['main_frame'] = 'admin/invit';
-			$this->load->view('lunatum/template', $this->data);
+			$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
+			$this->data['main_frame'] = TEMPLATE_VERSION.'/admin/invit';
+			$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 			return false;
 		}
 
@@ -177,13 +177,13 @@ class admin extends CI_Controller {
 	}
 
 	function edit_scales($id = 1) {
-			$this->data['main_view'] = 'dashboard';
-			$this->data['main_frame'] = 'admin/editScales';
+			$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
+			$this->data['main_frame'] = TEMPLATE_VERSION.'/admin/editScales';
 			
 			$this->load->model('Tools','',TRUE);
 			$this->data['scale'] = $this->Tools->get($id);
 			$this->data['toolId'] = $id;
-			$this->load->view('lunatum/template', $this->data);
+			$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 	}
 
 	function save_scale() {

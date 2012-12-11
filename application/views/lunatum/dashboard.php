@@ -1,15 +1,15 @@
-<?php set_js_path(array('lunatum/tabzilla')); ?>
+<?php set_js_path(array(TEMPLATE_VERSION.'/tabzilla')); ?>
 
         <div class="header-container">
         	<header class="header-wrapper clearfix">
         		<a href="http://www.mozilla.org/" id="tabzilla"><img src="/ninja/assets/tabzilla/media/img/tab.png" alt=""></a>
         		<ul class="topInfos">
-        			<li><a href="#"><h1 class="title">lunatum</h1></a></li>
+        			<li><a href="<?php echo base_url(''); ?>"><h1 class="title">lunatum</h1></a></li>
         		</ul>
         		<nav>
         			<ul>
         				<li><a href="#">Dr Gorovitchov</a></li>
-        				<li><a href="#" class="active">Tableau <span class="menuBreak"><br /></span>de bord</a></li>
+        				<li><a href="<?php echo base_url(''); ?>" class="active">Tableau <span class="menuBreak"><br /></span>de bord</a></li>
         				<li><a href="#">College <span class="menuBreak"><br /></span>Medical</a></li>
         				<!--<li><a href="#">Pharma <span class="menuBreak"><br /></span>Panels</a></li>-->
         			</ul>
