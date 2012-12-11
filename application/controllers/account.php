@@ -43,8 +43,8 @@ class account extends CI_Controller {
             return false;
         } 
 
-        $this->data['main_view'] = 'dashboard';
-        $this->data['main_frame'] = 'account/main';
+        $this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
+        $this->data['main_frame'] = TEMPLATE_VERSION.'/account/main';
 
         $this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 	}
@@ -75,7 +75,7 @@ class account extends CI_Controller {
 		$this->form_validation->set_rules('password_conf', "'Confirmation du mot de passe'", 'trim|required|matches[password]');
 
 		if ($this->form_validation->run() == FALSE) {
-			 $this->data['main_view'] = 'account/respondToInvitation';
+			 $this->data['main_view'] = TEMPLATE_VERSION.'/account/respondToInvitation';
 			 $this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 			return false;
 		}
@@ -108,7 +108,7 @@ class account extends CI_Controller {
 		$this->form_validation->set_rules('password', "'Mot de passe'", 'trim|required|callback_authentification');
 
 		if ($this->form_validation->run() == FALSE) {
-			$this->data['main_view'] = 'account/login';
+			$this->data['main_view'] = TEMPLATE_VERSION.'/account/login';
 			$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 			return false;
 		}
