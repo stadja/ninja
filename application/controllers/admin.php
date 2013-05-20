@@ -186,6 +186,16 @@ class admin extends CI_Controller {
 			$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 	}
 
+	function edit_calcs($id = 1) {
+			$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
+			$this->data['main_frame'] = TEMPLATE_VERSION.'/admin/editCalcs';
+			
+			$this->load->model('Tools','',TRUE);
+			$this->data['scale'] = $this->Tools->get($id);
+			$this->data['toolId'] = $id;
+			$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
+	}
+
 	function save_scale() {
 			$id = $this->input->post('id');
 			$serialization = $this->input->post('serialization');
