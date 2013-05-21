@@ -6,8 +6,8 @@
         $('select, input, input:checkbox, input:radio, input:file').uniform();");
 	
 	set_js_fx("Tools.setId(".$toolId.");");
-    if ($scale) {
-        set_js_fx("Tools.parse(".$scale->serialization.");");
+    if ($tool) {
+        set_js_fx("Tools.parse(".$tool->serialization.");");
     }
 ?>
 
@@ -46,7 +46,7 @@
                 {{#view Tools.EditScaleView contentBinding="this"}}
                     Ajouter <a {{action "addQuestion" on="click"}}> une question </a> / <a {{action "addText" on="click"}}> un texte </a>
                 {{/view}}
-                {{score}} <?php if($scale->type != 'QCM'): ?>/ {{maximum}}<?php endif; ?>
+                {{score}} <?php if($tool->type != 'QCM'): ?>/ {{maximum}}<?php endif; ?>
             </div>
         {{/each}}
         {{#view Tools.EditScaleView contentBinding="this"}}
@@ -54,7 +54,7 @@
                 Ajouter un set de questions
             </a>
         {{/view}}
-         <b>{{Tools.scaleTool.score}}</b> <?php if($scale->type != 'QCM'): ?>/  <b>{{Tools.scaleTool.maximum}}</b><?php endif; ?>
+         <b>{{Tools.scaleTool.score}}</b> <?php if($tool->type != 'QCM'): ?>/  <b>{{Tools.scaleTool.maximum}}</b><?php endif; ?>
         <div>
             {{#view Tools.EditScaleView contentBinding="this"}}
                 <a {{action "saveScale" on="click" context="Tools.scaleTool"}}>

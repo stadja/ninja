@@ -86,12 +86,12 @@ class admin extends CI_Controller {
 
 		$crud->add_action("Modifier le corps de l'outil"
 			, ''
-			, 'admin/edit_scales'
+			, 'admin/edit_tool'
 			, 'edit-inside-icon');
 
 		$crud->add_action("Voir l'outil"
 			, ''
-			, 'reader/scales'
+			, 'reader/tool'
 			, 'play-icon');
  
         $output = $crud->render();
@@ -176,32 +176,31 @@ class admin extends CI_Controller {
 
 	}
 
-	function edit_scales($id = 1) {
-			$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
-			$this->data['main_frame'] = TEMPLATE_VERSION.'/admin/editScales';
-			
-			$this->load->model('Tools','',TRUE);
-			$this->data['scale'] = $this->Tools->get($id);
-			$this->data['toolId'] = $id;
-			$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
-	}
+	function edit_tool($id = false) {
+		if (!$id) {
+			redirection('/admin/tools');
+		}
+		
+		$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
+		$this->load->model('Tools','',TRUE);
+		$this->data['tool'] = $this->Tools->get($id);
+		$this->data['toolId'] = $id;
 
-	function edit_calcs($id = 1) {
-			$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
+		if ($this->data['tool']->type == 'calc') {
 			$this->data['main_frame'] = TEMPLATE_VERSION.'/admin/editCalcs';
-			
-			$this->load->model('Tools','',TRUE);
-			$this->data['scale'] = $this->Tools->get($id);
-			$this->data['toolId'] = $id;
-			$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
+		} else {
+			$this->data['main_frame'] = TEMPLATE_VERSION.'/admin/editScales';
+		}
+
+		$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 	}
 
-	function save_scale() {
+	function save_tool($toolType = 'scale') {
 			$id = $this->input->post('id');
 			$serialization = $this->input->post('serialization');
 
 			$this->load->model('Tools');
-			$scale = $this->Tools->addOrUpdateScale($id, $serialization);
+			$scale = $this->Tools->addOrUpdateScale($id, $serialization, $toolType);
 
 			return $scale;
 	}

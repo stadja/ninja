@@ -39,9 +39,10 @@
         		<?php endif; ?>
         		<ul class="toolList">
         			<?php if ($user->hasRights('admin')) :?>
-        			<li><a href="<?php echo base_url('admin/tools');?>">Créer/Modifier les échelles</a></li>
+        			<li><a href="<?php echo base_url('admin/tools');?>">Créer/Modifier les outils</a></li>
         		<?php endif; ?>
-        		<li><a href="<?php echo base_url('reader/scales');?>">Un exemple d'échelle</a></li>
+                <li><a href="<?php echo base_url('reader/tool/20');?>">Un exemple d'échelle</a></li>
+        		<li><a href="<?php echo base_url('reader/tool/99');?>">Un exemple de calcul</a></li>
         	</ul>
         	<ul class="toolList">
         		<li>OUTILS MEDICAUX : </li>

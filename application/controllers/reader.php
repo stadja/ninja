@@ -60,12 +60,33 @@ class reader extends CI_Controller {
 		redirect('reader/setup');
 	}
 
-	function scales($id = 1) {
+	function tool($id) {
+		$this->load->model('Tools','',TRUE);
+		$tool = $this->Tools->get($id);
+
+		if ($tool->type == 'calc') {
+			redirect('/reader/calc/'.$id);
+		} else {
+			redirect('/reader/scale/'.$id);
+		}
+	}
+
+	function scale($id) {
 			$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
 			$this->data['main_frame'] = TEMPLATE_VERSION.'/reader/scales';
 			
 			$this->load->model('Tools','',TRUE);
 			$this->data['scale'] = $this->Tools->get($id);
+			
+			$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
+	}
+
+	function calc($id) {
+			$this->data['main_view'] = TEMPLATE_VERSION.'/dashboard';
+			$this->data['main_frame'] = TEMPLATE_VERSION.'/reader/calcs';
+			
+			$this->load->model('Tools','',TRUE);
+			$this->data['tool'] = $this->Tools->get($id);
 			
 			$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 	}

@@ -20,18 +20,18 @@ class Tools extends CI_Model {
 		return false;
 	}
 
-	function addOrUpdateScale($id, $serialization = '') {
+	function addOrUpdateScale($id, $serialization = '', $toolType = 'scale') {
 		$temp = $this->get($id);
 
 		$now = date ("Y-m-d H:i:s");
 		$data = array(
 			'serialization' => $serialization,
-			'type'          => 'scale',
+			'type'          => $toolType,
 			'updated'       => $now,
 		);
 
 		$this->serialization = $serialization;
-		$this->type          = 'scale';
+		$this->type          = $toolType;
 		$this->updated       = $now;
 
 		if ($temp) {

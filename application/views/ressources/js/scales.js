@@ -235,7 +235,7 @@ Tools.EditScaleView = Ember.View.extend({
 		var scaleId = Tools.scaleTool.get('id');	
 		$.ajax({
 		  type: 'POST',
-		  url: '/ninja/admin/save_scale',
+		  url: '/ninja/admin/save_tool',
 		  data: {id : scaleId, serialization : serialized},
 		  success: function(){alert("C'est bien sauvegard\xE9 !");}
 		});
