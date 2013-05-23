@@ -1,4 +1,4 @@
-<?php set_css_path(array(TEMPLATE_VERSION.'/normalize.min', TEMPLATE_VERSION.'/main2', TEMPLATE_VERSION.'/main2_dashboard', TEMPLATE_VERSION.'/tabzilla')); ?>
+<?php set_css_path(array(TEMPLATE_VERSION.'/tabzilla', TEMPLATE_VERSION.'/normalize.min', TEMPLATE_VERSION.'/main2', TEMPLATE_VERSION.'/main2_dashboard', )); ?>
 <?php set_js_path(array(TEMPLATE_VERSION.'/vendor/modernizr-2.6.1-respond-1.1.0.min', TEMPLATE_VERSION.'/main')); ?>
 
 

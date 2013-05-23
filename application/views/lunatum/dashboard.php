@@ -1,4 +1,5 @@
 <?php set_js_path(array(TEMPLATE_VERSION.'/tabzilla')); ?>
+<?php set_js_fx('Tabzilla.toggle();'); ?>
 
         <div class="header-container">
         	<header class="header-wrapper clearfix">

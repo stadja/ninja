@@ -23,6 +23,8 @@
 	    return this.replace(/^\s+|\s+$/g, '');
 	}
     }
+    var lastEntered = 0;
+    var dotAlreadyEntered = 0;
 
     /** default option */
     var defaultOptions = {
@@ -1414,18 +1416,32 @@
 		    'dependency': $dependency
 		}
 	    });
-	    //console.log(matrix);
-
-
+	    //console.log(matrix)
 	    //later change to options.event
 	    var $input_rw = $form.find('input:not([readonly])'); //the writeable input
-	    $input_rw.bind(defaultOptions.event, function() {
+	    
+            $input_rw.bind("keypress", function(event) {
+		if ((lastEntered == 46) && (event.charCode == 48)) {
+		    lastEntered = 46; 
+		} else {
+                    lastEntered = event.charCode;
+		}
+	    });
+
+	    $input_rw.bind(defaultOptions.event, function(event) {
 		var $input = $(this);
 		var $id = $input.attr('id');
 		var $nativeVal = $input.val();
+
+		if ((lastEntered == 46)) { // || (dotAlreadyEntered && (lastEntered == 48))) {
+			dotAlreadyEntered = 1;
+                        return false;
+                }
+
 		var $intVal = isNaN(parseFloat($nativeVal)) ? 0 : parseFloat($nativeVal);
 		$intVal = (matrix.data[$id].format.format == 'percent') ? $intVal / 100 : $intVal;
 		$intVal = (matrix.data[$id].format.format == 'formula') ? $nativeVal : $intVal;
+		$intVal = (lastEntered == 48) ? $nativeVal : $intVal;
 		var $formatVal = utility.formatter.formatNumber($intVal, matrix.data[$id].format);
 
 		//console.log($nativeVal+' => '+$intVal+' => '+$formatVal);

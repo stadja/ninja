@@ -107,6 +107,17 @@
 }
 
 
+@media only screen and (min-width: 719px) {
+    li.triple {
+      width:57% !important;
+    }
+    .triple li  { 
+      float:left !important;
+      display:inline;
+      width: 32% !important;
+    }
+}
+
 @media only screen and (min-width: 768px) {
 
     .header-wrapper {

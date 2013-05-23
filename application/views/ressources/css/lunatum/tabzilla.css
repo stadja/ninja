@@ -157,7 +157,7 @@
 #tabzilla-panel #tabzilla-nav {
     float: left;
     display: inline;
-    width: 620px;
+    /*width: 620px;*/
     margin: 0 10px;
 }
 
