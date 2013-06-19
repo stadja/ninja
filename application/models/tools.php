@@ -20,6 +20,22 @@ class Tools extends CI_Model {
 		return false;
 	}
 
+
+	function getAll($select = FALSE) {
+		$query = $this->db;
+		if ($select) {
+			$query->select($select);
+		}
+		$query = $query->get('tools');
+		$collection = array();
+		if($query->num_rows() > 0) {
+			foreach($query->result() as $tool) {
+				$collection[] = new self($tool);
+			}
+		}
+		return $collection;
+	}
+
 	function addOrUpdateScale($id, $serialization = '', $toolType = 'scale') {
 		$temp = $this->get($id);
 

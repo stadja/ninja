@@ -1,5 +1,5 @@
-<?php set_js_path(array(TEMPLATE_VERSION.'/tabzilla')); ?>
-<?php set_js_fx('Tabzilla.toggle();'); ?>
+<?php set_js_path(array(TEMPLATE_VERSION.'/tabzilla', 'tools')); ?>
+<?php //set_js_fx('Tabzilla.toggle();'); ?>
 
         <div class="header-container">
         	<header class="header-wrapper clearfix">
@@ -48,8 +48,7 @@
         	<ul class="toolList">
         		<li>OUTILS MEDICAUX : </li>
         		<li><a href="#">VIDAL</a></li>
-        		<li><a href="<?php echo base_url('reader/scales');?>">ECHELLES</a></li>
-        		<li><a href="#">OUTILS DE CALCULS</a></li>
+        		<li><a href="<?php echo base_url('admin/tools');?>">Outils</a></li>
         		<li><a href="#">AGENDA</a></li>
         		<li><a href="#">CRAT</a></li>
         	</ul>

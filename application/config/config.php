@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://stadja.net/ninja';
+$config['base_url']	= 'http://salledegarde.fr/ninja';
 
 /*
 |--------------------------------------------------------------------------

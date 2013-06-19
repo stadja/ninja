@@ -91,6 +91,26 @@ class reader extends CI_Controller {
 			$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 	}
 
+	function json_get_specialities() {
+		$this->load->model('Specialities','',TRUE);
+		$collection = $this->Specialities->getAll();
+		echo json_encode($collection);
+		die();
+	}
+
+	function json_get_tool_by_specialities($id_specialities = false) {
+		if (!$id_specialities) {
+			$this->load->model('Tools','',TRUE);
+			$collection = $this->Tools->getAll('id, title');
+			echo json_encode($collection);
+		} else {
+			$this->load->model('Specialities','',TRUE);
+			$collection = $this->Specialities->getTool($id_specialities);
+			echo json_encode($collection);
+		}
+		die();
+	}
+
 }
 
 /* End of file welcome.php */

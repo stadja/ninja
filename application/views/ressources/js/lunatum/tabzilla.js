@@ -491,7 +491,7 @@ Tabzilla.toggleSubmenu = function($item, $menu)
     }
 };
 
-Tabzilla.openSubmenu = function($item, $menu)
+Tabzilla.openSubmenu = function($item, $menu, no_height)
 {
     $item.attr('aria-expanded', 'true');
 
@@ -499,15 +499,21 @@ Tabzilla.openSubmenu = function($item, $menu)
     $items.attr('tabindex', '0');
 
     // get natural menu height
-    var height = 0;
-    $menu.find('li').each(function(i, e) {
-        height += jQuery(e).height() + 1;
-    });
-    height--;
+    height = 0;
+    if (no_height) {
+        height = '100%';
 
-    $menu
-        .css('height', height + 'px')
-        .attr('aria-hidden', 'false');
+        $menu.css('height', '100%')
+    } else {
+        $menu.find('li').each(function(i, e) {
+            height += jQuery(e).height() + 1;
+        });
+        height--;
+
+        $menu.css('height', height + 'px');
+    }
+
+    $menu.attr('aria-hidden', 'false');
 };
 
 Tabzilla.closeSubmenu = function($item, $menu)
@@ -529,39 +535,12 @@ Tabzilla.content =
     '<div id="tabzilla-contents">'
     + '  <div id="tabzilla-nav">'
     + '    <ul>'
-    + '      <li><h2>Mozilla</h2>'
-    + '        <ul>'
-    + '          <li><a href="https://www.mozilla.org/mission/">Outils</a></li>'
-    + '          <li><a href="https://www.mozilla.org/about/">About</a></li>'
-    + '          <li><a href="https://www.mozilla.org/projects/">Projects</a></li>'
-    + '          <li><a href="https://support.mozilla.org/">Support</a></li>'
-    + '          <li><a href="https://developer.mozilla.org">Developer Network</a></li>'
-    + '          <li><a href="https://www.mozilla.org/projects/">Projects</a></li>'
+    + '      <li id="speciality_list"><h2>Spécialités</h2>'
+    + '        <ul id="speciality">'
     + '        </ul>'
     + '      </li>'
-    + '      <li class="triple"><h2>Get Involved</h2>'
-    + '        <ul>'
-    + '          <li><a href="https://www.mozilla.org/contribute/">Volunteer</a></li>'
-    + '          <li><a href="https://www.mozilla.org/en-US/about/careers.html">Careers</a></li>'
-    + '          <li><a href="https://www.mozilla.org/en-US/about/mozilla-spaces/">Find us</a></li>'
-    + '          <li><a href="https://donate.mozilla.org/">Join us</a></li>'
-    + '          <li><a href="https://www.mozilla.org/en-US/about/careers.html">Careers</a></li>'
-    + '          <li><a href="https://www.mozilla.org/en-US/about/mozilla-spaces/">Find us</a></li>'
-    + '          <li><a href="https://donate.mozilla.org/">Join us</a></li>'
-    + '          <li><a href="https://www.mozilla.org/en-US/about/careers.html">Careers</a></li>'
-    + '          <li><a href="https://www.mozilla.org/en-US/about/mozilla-spaces/">Find us</a></li>'
-    + '          <li><a href="https://donate.mozilla.org/">Join us</a></li>'
-    + '          <li><a href="https://www.mozilla.org/en-US/about/careers.html">Careers</a></li>'
-    + '          <li><a href="https://www.mozilla.org/en-US/about/mozilla-spaces/">Find us</a></li>'
-    + '          <li><a href="https://donate.mozilla.org/">Join us</a></li>'
-    + '          <li><a href="https://www.mozilla.org/en-US/about/mozilla-spaces/">Find us</a></li>'
-    + '          <li><a href="https://donate.mozilla.org/">Join us</a></li>'
-    + '          <li><a href="https://www.mozilla.org/en-US/about/careers.html">Careers</a></li>'
-    + '          <li><a href="https://www.mozilla.org/en-US/about/mozilla-spaces/">Find us</a></li>'
-    + '          <li><a href="https://donate.mozilla.org/">Join us</a></li>'
-    + '          <li><a href="https://www.mozilla.org/en-US/about/careers.html">Careers</a></li>'
-    + '          <li><a href="https://www.mozilla.org/en-US/about/mozilla-spaces/">Find us</a></li>'
-    + '          <li><a href="https://donate.mozilla.org/">Join us</a></li>'
+    + '      <li class="triple"><h2 id="tool_title">Outils</h2>'
+    + '        <ul id="tool_list">'
     + '        </ul>'
     + '      </li>'
     + '      <li id="tabzilla-search">'

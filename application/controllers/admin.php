@@ -75,7 +75,8 @@ class admin extends CI_Controller {
 		$crud = new grocery_CRUD();
 		$crud->set_table('tools');
         $crud->set_subject('Outil');
-
+ 		$crud->set_relation_n_n('specialites', 'tools_specialities', 'specialities', 'id_tools', 'id_specialities', 'name');
+   	 	
      	$crud->change_field_type('created','invisible');
 		$crud->change_field_type('updated','invisible');
     	$crud->callback_before_insert(array($this,'_before_insert'));
@@ -97,7 +98,22 @@ class admin extends CI_Controller {
         $output = $crud->render();
 		
 		$this->data['main_view']  = TEMPLATE_VERSION.'/dashboard';
-		$this->data['main_frame'] = TEMPLATE_VERSION.'/fragments/showCrud';
+		$this->data['main_frame'] = TEMPLATE_VERSION.'/fragments/showCrud-tools';
+		$this->data['crud']       = $output;
+		$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
+		return false;
+	}
+
+	public function specialities() {
+		$crud = new grocery_CRUD();
+		$crud->set_table('specialities');
+        $crud->set_subject('spécialité');
+  		$crud->set_relation_n_n('outils', 'tools_specialities', 'tools', 'id_specialities', 'id_tools', 'title');
+   	 	
+        $output = $crud->render();
+		
+		$this->data['main_view']  = TEMPLATE_VERSION.'/dashboard';
+		$this->data['main_frame'] = TEMPLATE_VERSION.'/fragments/showCrud-tools';
 		$this->data['crud']       = $output;
 		$this->load->view(TEMPLATE_VERSION.'/template', $this->data);
 		return false;
